@@ -1,0 +1,7 @@
+CREATE TABLE aluno (
+    id INT PRIMARY KEY NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    idade INT NOT NULL,
+    casa VARCHAR(255) NOT NULL,
+    ano INT NOT NULL
+);
