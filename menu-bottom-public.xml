@@ -1,8 +1,8 @@
 <menu>
-    <menuitem label="Aprenda">
-      <icon>fas:book fa-fw</icon>
-      <action>LearnView</action>
-      <title>Aprenda</title>
+    <menuitem label="Hogwarts School">
+      <icon>fa:chess-rook fa-fw</icon>
+      <action>SaibaMais</action>
+      <title>Saiba Mais</title>
       <mobile>Y</mobile>
     </menuitem>
 </menu>

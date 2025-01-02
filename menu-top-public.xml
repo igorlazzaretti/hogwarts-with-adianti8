@@ -1,5 +1,5 @@
 <menu>
-    <menuitem label="Voltar para o início da jornada">
+    <menuitem label="  Início da jornada">
       <icon>fas:otter fa-fw</icon>
       <action>WelcomeView</action>
       <title>Voltar para o início da jornada</title>

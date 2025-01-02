@@ -32,11 +32,23 @@
                 <icon>fa:wand-magic-sparkles fa-fw</icon>
                 <action>TemplateView</action>
             </menuitem>
-
-
         </menu>
     </menuitem>
     // Final da Administração de Hogwarts
+    // Dev
+    <menuitem label='Desenvolvedor'>
+        <icon>fa:laptop fa-fw</icon>
+        <menu>
+            <menuitem label='Conexão com o Banco de Dados'>
+            <icon>fa:cog fa-fw</icon>
+            <action>ConexaoManual</action>
+            </menuitem>
+            <menuitem label='SaibaMais'>
+            <icon>fa:book fa-fw</icon>
+            <action>SaibaMais</action>
+            </menuitem>
+        </menu>
+    </menuitem>
     // Configuração
     <menuitem label='Configuração'>
         <icon>fa:cog fa-fw</icon>
