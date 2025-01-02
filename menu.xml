@@ -7,10 +7,19 @@
                 <icon>fa:chess-rook fa-fw</icon>
                 <action>WelcomeView</action>
             </menuitem>
-
-            <menuitem label='Aluno'>
-                <icon>fa:bolt-lightning fa-fw</icon>
-                <action>LearnView</action>
+            <!-- Alunos -->
+            <menuitem label='Alunos'>
+            <icon>fa:bolt-lightning fa-fw</icon>
+            <menu>
+                <menuitem label='Total de Alunos'>
+                    <icon>fa:bolt-lightning fa-fw</icon>
+                    <action>AlunosTotal</action>
+                </menuitem>
+                <menuitem label='Cadastrar Aluno'>
+                    <icon>fa:bolt-lightning fa-fw</icon>
+                    <action>ConexaoManual</action>
+                </menuitem>
+            </menu>
             </menuitem>
 
             <menuitem label='Professor'>
@@ -53,7 +62,7 @@
     <menuitem label='Configuração'>
         <icon>fa:cog fa-fw</icon>
         <menu>
-                    <menuitem label='Início'>
+            <menuitem label='Início'>
                 <icon>fa:life-ring fa-fw</icon>
                 <action>WelcomeView</action>
             </menuitem>
