@@ -5,7 +5,7 @@
         <menu>
             <menuitem label='Sua Jornada Começa Aqui'>
                 <icon>fa:chess-rook fa-fw</icon>
-                <action>WelcomeView</action>
+                <action>InicioDaJornada</action>
             </menuitem>
             <!-- Alunos -->
             <menuitem label='Alunos'>
