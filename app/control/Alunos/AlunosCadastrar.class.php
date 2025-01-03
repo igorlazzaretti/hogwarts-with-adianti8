@@ -2,6 +2,8 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Core\AdiantiCoreApplication;
+use Adianti\Database\TTransaction;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TToast;
@@ -33,8 +35,8 @@ class AlunosCadastrar extends TPage
 
         // create the form fields
         $nome        = new TEntry('nome');
-        $age       = new TEntry('idade');
-        $ano        = new TCombo('ano');
+        $age         = new TEntry('idade');
+        $ano         = new TCombo('ano');
         $casa        = new TCombo('casa');
 
 
@@ -42,10 +44,10 @@ class AlunosCadastrar extends TPage
         $age->setSize  ('45%');
         $ano->setSize  ('45%');
         $ano->addItems( [
-            1 => 1,
-            2 => 2,
-            3 => 3,
-            4 => 4
+            1 => '1º ano',
+            2 => '2ª ano',
+            3 => '3º ano',
+            4 => '4º ano'
             ]);
         $ano->setValue('1');
         $casa->setSize ('45%');
@@ -58,13 +60,13 @@ class AlunosCadastrar extends TPage
 
 
         $age->setValue(11);
-        $casa->setValue('l');
+        $casa->setValue('Lufa-Lufa');
 
         // add the fields inside the form
         $this->form->addFields( [new TLabel('Nome do Aluno')], [$nome] );
-        $this->form->addFields( [new TLabel('Idade')],       [$age]);
-        $this->form->addFields( [new TLabel('Ano Escolar')], [$ano]);
-        $this->form->addFields( [new TLabel('Casa')],        [$casa]);
+        $this->form->addFields( [new TLabel('Idade')],         [$age]  );
+        $this->form->addFields( [new TLabel('Ano Escolar')],   [$ano]  );
+        $this->form->addFields( [new TLabel('Casa')],          [$casa] );
 
 
         $nome->placeholder = 'Digite o nome do aluno';
@@ -115,13 +117,23 @@ class AlunosCadastrar extends TPage
             $message .= 'Casa: ' . $data->casa . '<br>';
 
             // exibe a mensagem
-            new TMessage('info', $message);
+            new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
             TToast::show('success', 'Aluno cadastrado com sucesso!', 'bottom right', 'far:check-circle');
+
+
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro
         }
+    }
+
+    /**  Método onSuccess()
+    *  Se Aluno cadastrado com sucesso, recarrega a datagrid para o usuário
+    */
+    public function onSuccess()
+    {
+        AdiantiCoreApplication::gotoPage('Alunos', 'onReload');
     }
 }

@@ -17,7 +17,7 @@ class AdiantiCoreTranslator
     private $lang;            // target language
     private $messages;
     private $sourceMessages;
-    
+
     /**
      * Class Constructor
      */
@@ -178,7 +178,10 @@ class AdiantiCoreTranslator
         $this->messages['en'][] = 'Found (^1) records in "^2". Record cannot be deleted';
         $this->messages['en'][] = 'Database not found';
         $this->messages['en'][] = 'Unsupported type';
-        
+        $this->messages['en'][] = 'Wizard deleted';
+        $this->messages['en'][] = 'Subject deleted';
+
+
         $this->messages['pt'][] = 'Carregando';
         $this->messages['pt'][] = 'Arquivo não encontrado';
         $this->messages['pt'][] = 'Buscar';
@@ -333,7 +336,9 @@ class AdiantiCoreTranslator
         $this->messages['pt'][] = 'Encontrados (^1) registros em "^2". O registro não pode ser excluído';
         $this->messages['pt'][] = 'Banco de dados não encontrado';
         $this->messages['pt'][] = 'Tipo não suportado';
-        
+        $this->messages['pt'][] = 'Bruxoa(a) excluído.';
+        $this->messages['pt'][] = 'Matéria excluída.';
+
         $this->messages['es'][] = 'Cargando';
         $this->messages['es'][] = 'Archivo no encontrado';
         $this->messages['es'][] = 'Buscar';
@@ -488,15 +493,17 @@ class AdiantiCoreTranslator
         $this->messages['es'][] = 'Se encontraron (^1) registros en "^2". El registro no se puede eliminar';
         $this->messages['es'][] = 'Base de datos no encontrada';
         $this->messages['es'][] = 'Tipo no admitido';
-        
-        //fim
-	
+        $this->messages['es'][] = 'Brujo(a) eliminado.';
+        $this->messages['es'][] = 'Asignatura eliminado.';
+
+        // Fim
+
         foreach ($this->messages as $lang => $messages)
         {
             $this->sourceMessages[$lang] = array_flip( $this->messages[ $lang ] );
         }
     }
-    
+
     /**
      * Returns the singleton instance
      * @return  Instance of self
@@ -512,7 +519,7 @@ class AdiantiCoreTranslator
         // returns the created instance
         return self::$instance;
     }
-    
+
     /**
      * Define the target language
      * @param $lang Target language index
@@ -520,12 +527,12 @@ class AdiantiCoreTranslator
     public static function setLanguage($lang)
     {
         $instance = self::getInstance();
-        
+
         if (substr( (string) $lang,0,4) == 'auto')
         {
             $parts = explode(',', $lang);
             $lang = $parts[1];
-            
+
             if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
             {
                 $autolang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2);
@@ -535,13 +542,13 @@ class AdiantiCoreTranslator
                 }
             }
         }
-        
+
         if (in_array($lang, array_keys($instance->messages)))
         {
             $instance->lang = $lang;
         }
     }
-    
+
     /**
      * Returns the target language
      * @return Target language index
@@ -551,7 +558,7 @@ class AdiantiCoreTranslator
         $instance = self::getInstance();
         return $instance->lang;
     }
-    
+
     /**
      * Translate a word to the target language
      * @param $word     Word to be translated
@@ -564,16 +571,16 @@ class AdiantiCoreTranslator
         // get the self unique instance
         $instance = self::getInstance();
         // search by the numeric index of the word
-        
+
         if (isset($instance->sourceMessages[$source_language][$word]) and !is_null($instance->sourceMessages[$source_language][$word]))
         {
             $key = $instance->sourceMessages[$source_language][$word];
-            
+
             // get the target language
             $language = self::getLanguage();
             // returns the translated word
             $message = $instance->messages[$language][$key];
-            
+
             if (isset($param1))
             {
                 $message = str_replace('^1', $param1, $message);

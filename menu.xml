@@ -1,47 +1,37 @@
 <menu>
     // Administração de Hogwarts
-        <menuitem label='Administração da Escola'>
-        <icon>fa:dragon fa-fw</icon>
-        <menu>
-            <menuitem label='Sua Jornada Começa Aqui'>
-                <icon>fa:chess-rook fa-fw</icon>
-                <action>InicioDaJornada</action>
-            </menuitem>
-            <!-- Alunos -->
-            <menuitem label='Alunos'>
+    <menuitem label='Sua Jornada Começa Aqui'>
+        <icon>fa:chess-rook fa-fw</icon>
+        <action>InicioDaJornada</action>
+    </menuitem>
+    <!-- Alunos -->
+    <menuitem label='Alunos'>
+    <icon>fa:bolt-lightning fa-fw</icon>
+    <menu>
+        <menuitem label='Alunos'>
             <icon>fa:bolt-lightning fa-fw</icon>
-            <menu>
-                <menuitem label='Total de Alunos'>
-                    <icon>fa:bolt-lightning fa-fw</icon>
-                    <action>AlunosTotal</action>
-                </menuitem>
-                <menuitem label='Cadastrar Aluno'>
-                    <icon>fa:bolt-lightning fa-fw</icon>
-                    <action>AlunosCadastrar</action>
-                </menuitem>
-            </menu>
-            </menuitem>
+            <action>Alunos</action>
+        </menuitem>
+        <menuitem label='Cadastrar Aluno'>
+            <icon>fa:bolt-lightning fa-fw</icon>
+            <action>AlunosCadastrar</action>
+        </menuitem>
+    </menu>
+    </menuitem>
 
-            <menuitem label='Professor'>
-                <icon>fa:hat-wizard fa-fw</icon>
-                <action>TemplateView</action>
-            </menuitem>
+    <menuitem label='Professor'>
+        <icon>fa:hat-wizard fa-fw</icon>
+        <action>Professores</action>
+    </menuitem>
 
-            <menuitem label='Matéria'>
-                <icon>fa:flask fa-fw</icon>
-                <action>TemplateView</action>
-            </menuitem>
+    <menuitem label='Matérias'>
+        <icon>fa:flask fa-fw</icon>
+        <action>Materias</action>
+    </menuitem>
 
-            <menuitem label='Matérias dos Aluno'>
-                <icon>fa:book fa-fw</icon>
-                <action>TemplateView</action>
-            </menuitem>
-
-            <menuitem label='Funcionários'>
-                <icon>fa:wand-magic-sparkles fa-fw</icon>
-                <action>TemplateView</action>
-            </menuitem>
-        </menu>
+    <menuitem label='Funcionários'>
+        <icon>fa:wand-magic-sparkles fa-fw</icon>
+        <action>Funcionarios</action>
     </menuitem>
     // Final da Administração de Hogwarts
     // Dev

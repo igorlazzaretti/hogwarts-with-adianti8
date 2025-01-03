@@ -2,9 +2,11 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Core\AdiantiCoreTranslator;
 use Adianti\Database\TDatabase;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Container\THBox;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
@@ -13,10 +15,12 @@ use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Dialog\TToast;
+use Adianti\Widget\Form\TButton;
+use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 
-class AlunosTotal extends TPage
+class Professores extends TPage
 {
     private $datagrid;
 
@@ -28,38 +32,33 @@ class AlunosTotal extends TPage
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
 
         // create the datagrid columns
-        $id = new TDataGridColumn('id', 'Nro', 'left', '10%');
-        $name  = new TDataGridColumn  ( 'name',  'Bruxo(a)',    'left',   '25%');
-        $age  = new TDataGridColumn   ( 'age',   'Idade',       'left',   '20%');
-        $year  = new TDataGridColumn  ( 'year',  'Ano Escolar', 'left',   '20%');
-        $house  = new TDataGridColumn ( 'house', 'Casa',        'left',   '25%');
-
+        $id   = new TDataGridColumn    ( 'id',      'Nro',                 'left',  '0%');
+        $name = new TDataGridColumn    ( 'name',    'Nome do Professor',   'left',  '40%');
+        $materia = new TDataGridColumn ( 'materia', 'Matéria que Leciona', 'left',  '60%');
 
         // add the columns to the datagrid, with actions on column titles, passing parameters
         $this->datagrid->addColumn($name);
-        $this->datagrid->addColumn($age);
-        $this->datagrid->addColumn($year);
-        $this->datagrid->addColumn($house);
+        $this->datagrid->addColumn($materia);
 
         // creates two datagrid actions
         $action1 = new TDataGridAction([$this, 'onView'],[
-            'id'    => '{id}',
-            'nome'  => '{name}',
-            'idade' => '{age}',
-            'casa'  => '{house}',
-            'ano'   => '{year}'
+            'id'         => '{id}',
+            'nome'       => '{name}',
+            'materia_id' => '{materia}'
         ]);
         $action2 = new TDataGridAction([$this, 'onSubject'],[
-            'nome' => '{name}',
-            'ano'  => '{year}'
+            'nome'       => '{name}',
+            'materia_id' => '{materia}'
         ]);
         $action3 = new TDataGridAction([$this, 'onDelete'],[
-            'id'    => '{id}',
-            'nome'  => '{name}',
+            'id'         => '{id}',
+            'nome'       => '{name}',
+            'materia_id' => '{materia}'
         ]);
         $action4 = new TDataGridAction([$this, 'onEdit'],[
-            'id'    => '{id}',
-            'nome'  => '{name}',
+            'id'         => '{id}',
+            'nome'       => '{name}',
+            'materia_id' => '{materia}'
         ]);
 
         // custom button presentation
@@ -70,7 +69,7 @@ class AlunosTotal extends TPage
 
         // add the actions to the datagrid
         $this->datagrid->addAction($action1, '', 'fa:search blue');
-        $this->datagrid->addAction($action2, 'Matérias', 'fa:book purple');
+        $this->datagrid->addAction($action2, 'Curiosidade', 'fa:book purple');
         $this->datagrid->addAction($action3, '', 'fa:trash red');
         $this->datagrid->addAction($action4, '', 'fa:edit green');
 
@@ -84,16 +83,14 @@ class AlunosTotal extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, idade, casa, ano FROM aluno ORDER BY id');
+                id, nome, materia_id FROM professor ORDER BY id');
 
             foreach ($result as $row)
             {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->age = $row['idade'];
-                $item->year = $row['ano'];
-                $item->house = $row['casa'];
+                $item->year = $row['materia_id'];
                 $this->datagrid->addItem($item);
             }
 
@@ -103,18 +100,42 @@ class AlunosTotal extends TPage
             new TMessage('error', $e->getMessage());
         }
 
+
+        // Cria o botão de cadastrar matéria
+        $button = new TButton('cadastrar_materia');
+        $button->setLabel('Cadastrar Matéria');
+        $button->setImage('fa:plus green');
+        $button->setAction(new TAction([$this, 'onCreateMateria']), 'Cadastrar Novo Professor');
+
+
         $panel = new TPanelGroup();
         $panel->add($this->datagrid)->style = 'overflow-x:auto';
-        $panel->addFooter('Alunos de Hogwarts School of Wizardry and Witchcraft');
+        // Adiciona o botão ao rodapé do painel
+        $panel->addHeaderWidget(THBox::pack($button));
+        $panel->addFooter('Professores - Hogwarts School of Witchcraft and Wizardry');
 
         // wrap the page content using vertical box
         $vbox = new TVBox;
         $vbox->style = 'width: 100%';
         $vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $vbox->add($panel);
+
+        // Registra o botão no formulário
+        $this->form = new TForm('form_materias');
+        $this->form->setFields([$button]);
+        $vbox->add($this->form);
+
         parent::add($vbox);
     }
 
+    /**
+     *  Método onView()
+     *  Cadastra um novo professor
+     */
+    public function onCreateMateria($param)
+    {
+        AdiantiCoreApplication::gotoPage('ProfessoresCadastrar', 'onCreate');
+    }
 
     /**
      *  Método onView()
@@ -123,62 +144,34 @@ class AlunosTotal extends TPage
     public static function onView($param)
     {
         // get the parameter and shows the message
-        $name   = $param['name'];
-        $age    = $param['idade'];
-        $house  = $param['casa'];
-        $year   = $param['ano'];
+        $name     = $param['name'];
+        $materia  = $param['materia_id'];
 
-        new TMessage('info', "O Nome do Aluno é: <b>$name</b>, <br>
-                                Idade: <b>$age</b> anos, <br>
-                                Casa: <b>$house</b>, <br>
-                                Ano Escolar: <b>$year</b>");
+        new TMessage('info', "  O Nome do Professor é: <b>$name</b>, <br>
+                                sua matéria lecionada é: <b>$materia</b>;" );
     }
 
     /**
      *  Método onSubject()
-     *
+     *  Mostra o assunto ensinado nesta matéria
      */
     public static function onSubject($param)
     {
-        try {
-            TTransaction::open('hogwartsdb');
-            $conn = TTransaction::get();
-
-            $year = $param['ano'];
-
-            // Consulta as matérias do ano escolar correspondente
-            $result2 = $conn->query("SELECT nome FROM materia WHERE ano = {$year} ORDER BY id");
-
-            $subjects = [];
-            foreach ($result2 as $row) {
-                $subjects[] = $row['nome'];
-            }
-
-            if ($subjects) {
-                $subjectList = implode('<br>', $subjects);
-                new TMessage('info', "Matérias do aluno:<br>{$subjectList}");
-            } else {
-                new TMessage('info', "Nenhuma matéria encontrada para este ano escolar.");
-            }
-
-            TTransaction::close();
-
-        } catch (Exception $e) {
-            new TMessage('error', $e->getMessage());
-        } finally {
-            TTransaction::close();
-        }
+        new TMessage('info',    'Estes são os contúdos desta matéria: <br>
+                            Desvendar a borra de café do fundo da xícara, <br>
+                            Uso do viratempo para assistir muitas aulas, <br>
+                            Desaparatar dentro de Hogwarts, com Dumbledore (mistério).' );
     }
+
     public static function onDelete($param)
     {
         // define the delete action
         $action = new TAction(array(__CLASS__, 'Delete'));
         $action->setParameters($param); // pass the key parameter ahead
 
-        $name   = $param['name'];
+        $name = $param['name'];
         // shows a dialog to the user
         new TQuestion(('Quer mesmo deletar ' . $name . '?'), $action);
-
     }
 
     /**
@@ -188,19 +181,20 @@ class AlunosTotal extends TPage
     {
         try
         {
+            // $key conterá o id da Matéria
             $key = $param['key']; // get the parameter $key
             TTransaction::open('hogwartsdb'); // open a transaction with database
             $conn = TTransaction::get(); // get the database connection
 
-            // executa a query SQL para deletar o aluno
-            $conn->exec("DELETE FROM aluno WHERE id = {$key}");
+            // Executa a query SQL para deletar a Matéria
+            $conn->exec("DELETE FROM materia WHERE id = {$key}");
 
             TTransaction::close(); // close the transaction
 
             $pos_action = new TAction([__CLASS__, 'onReload']);
-            new TMessage('info', AdiantiCoreTranslator::translate('Record deleted'), $pos_action); // success message
+            new TMessage('info', AdiantiCoreTranslator::translate('Subject deleted.'), $pos_action); // success message
 
-            TToast::show('warning', 'Aluno deletado com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Matéria deletada com sucesso!', 'bottom right', 'far:check-circle');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();
@@ -211,8 +205,20 @@ class AlunosTotal extends TPage
         }
     }
 
-    public function onEdit() {
-        new TMessage('info', 'Editando');
+    public function onEdit($param)
+    {
+        try {
+            if (isset($param['id'])) {
+                $id = $param['id'];
+
+                // Redireciona para a página de edição com o ID do aluno
+                AdiantiCoreApplication::gotoPage('MateriasEdit', 'onEdit', ['id' => $id]);
+            } else {
+                new TMessage('error', 'ID do aluno não fornecido.');
+            }
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
     }
 
     public function onReload($param = null)
@@ -227,16 +233,14 @@ class AlunosTotal extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, idade, casa, ano FROM aluno ORDER BY id');
+                id, nome, ano FROM materia ORDER BY id');
 
             foreach ($result as $row)
             {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->age = $row['idade'];
                 $item->year = $row['ano'];
-                $item->house = $row['casa'];
                 $this->datagrid->addItem($item);
             }
 

@@ -1,6 +1,8 @@
 <?php
 
+use Adianti\Control\TPage;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Dialog\TMessage;
 
 class ConexaoManual extends TPage
 {
@@ -48,6 +50,23 @@ class ConexaoManual extends TPage
                         $row['nome'] . ', Ano: ' .
                         $row['ano'] . '°'. ';<br>');
             }
+
+            /**
+             *  Tabela: Funcionario
+             *  id + nome + cargo
+             */
+            print_r('<br> ');
+
+            $result = $conn->query('SELECT id, nome, cargo FROM funcionario ORDER BY id');
+
+            foreach ($result as $row)
+            {
+                print_r('Funcionário ' .
+                        $row['id'] . '- Nome: ' .
+                        $row['nome'] . ', Ano: ' .
+                        $row['cargo'] . ';<br>');
+            }
+
 
             TTransaction::close();
 

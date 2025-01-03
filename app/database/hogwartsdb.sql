@@ -21,6 +21,13 @@ CREATE TABLE Materia (
     ano INTEGER NOT NULL
 );
 
+-- Criação da tabela Funcionario
+CREATE TABLE Funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cargo VARCHAR(255) NOT NULL
+);
+
 -- Inserção de dados de exemplo na tabela Aluno
 INSERT INTO Aluno (nome, idade, casa, ano) VALUES
 ('Harry Potter', 11, 'Grifinória', 1),
@@ -49,7 +56,13 @@ INSERT INTO Materia (nome, ano) VALUES
 ('Defesa Contra as Artes das Trevas', 3),
 ('Trato das Criaturas Mágicas', 3),
 ('Adivinhação', 4),
-('Feitiços Avançados', 4);  
+('Feitiços Avançados', 4);
+
+-- Inserção de dados de exemplo na tabela Professor
+INSERT INTO Funcionario (nome, cargo) VALUES
+('Rubeus Hagrid', 'Guarda-caça e Guardião das Chaves e Terrenos de Hogwarts'),
+('Alvo Dumbledore', 'Diretor de Hogwarts'),
+('Minerva McGonagall', 'Diretora-adjunta');
 
 -- Gemini
 -- me ajude a criar um conteudo .sql para meu banco de dados para um simples ERP da escola de Hogwarts. Com Duas tabelas principais Aluno, essa com ID, nome, idade, casa de hogwarts e ano. Outra tabela de Professores com id, nome e matéria. Uma tabela com as Matérias: id, nome, ano. Algumas regras: cada ano escolar, do primeiro ao quarto, possuirá algumas matérias vinculadas a ele. Pode me ajudar a elaborar algo assim? quero utilizar no adianti 8
