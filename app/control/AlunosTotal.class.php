@@ -43,24 +43,30 @@ class AlunosTotal extends TPage
             'casa'=> '{house}',
             'ano' => '{year}'
         ]);
+        $action2 = new TDataGridAction([$this, 'onSubject'],[
+            'nome'=>'{name}',
+            'ano' => '{year}'
+        ]);
 
         // custom button presentation
         $action1->setUseButton(TRUE);
+        $action2->setUseButton(TRUE);
 
         // add the actions to the datagrid
-        $this->datagrid->addAction($action1, 'View', 'fa:search blue');
+        $this->datagrid->addAction($action1, 'Informações', 'fa:search blue');
+        $this->datagrid->addAction($action2, 'Matérias', 'fa:book blue');
+
 
         // creates the datagrid model
         $this->datagrid->createModel();
-
-
 
         // Start Populatin Data
         try {
             TTransaction::open('hogwartsdb');
             $conn = TTransaction::get();
 
-            $result = $conn->query('SELECT id, nome, idade, casa, ano FROM aluno ORDER BY id');
+            $result = $conn->query('SELECT
+                id, nome, idade, casa, ano FROM aluno ORDER BY id');
 
             foreach ($result as $row)
             {
@@ -92,7 +98,8 @@ class AlunosTotal extends TPage
 
 
     /**
-     * Executed when the user clicks at the view button
+     *  Método onView()
+     *  Mostra as informações específicas daquele aluno
      */
     public static function onView($param)
     {
@@ -107,4 +114,40 @@ class AlunosTotal extends TPage
                                 Casa: <b>$house</b>, <br>
                                 Ano Escolar: <b>$year</b>");
     }
+
+    /**
+     *  Método onSubject()
+     *
+     */
+    public static function onSubject($param)
+    {
+        try {
+            TTransaction::open('hogwartsdb');
+            $conn = TTransaction::get();
+
+            $year = $param['ano'];
+
+            // Consulta as matérias do ano escolar correspondente
+            $result2 = $conn->query("SELECT nome FROM materia WHERE ano = {$year} ORDER BY id");
+
+            $subjects = [];
+            foreach ($result2 as $row) {
+                $subjects[] = $row['nome'];
+            }
+
+            if ($subjects) {
+                $subjectList = implode('<br>', $subjects);
+                new TMessage('info', "Matérias do aluno:<br>{$subjectList}");
+            } else {
+                new TMessage('info', "Nenhuma matéria encontrada para este ano escolar.");
+            }
+
+            TTransaction::close();
+
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+        } finally {
+            TTransaction::close();
+        }
+}
 }

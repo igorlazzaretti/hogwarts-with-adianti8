@@ -17,7 +17,7 @@
                 </menuitem>
                 <menuitem label='Cadastrar Aluno'>
                     <icon>fa:bolt-lightning fa-fw</icon>
-                    <action>ConexaoManual</action>
+                    <action>AlunosCadastrar</action>
                 </menuitem>
             </menu>
             </menuitem>

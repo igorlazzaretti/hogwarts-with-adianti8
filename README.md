@@ -1,5 +1,4 @@
 <!--
-
     Instruções Iniciais
 
     Configure o Banco de Dados
