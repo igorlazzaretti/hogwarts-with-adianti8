@@ -33,7 +33,24 @@
         <icon>fa:wand-magic-sparkles fa-fw</icon>
         <action>Funcionarios</action>
     </menuitem>
+
+    <menuitem label='Taça das Casas'>
+        <icon>fa:trophy fa-fw</icon>
+        <action>TacaDasCasas</action>
+    </menuitem>
+
+    <menuitem label='Chapéu Seletor'>
+        <icon>fa:hat-wizard fa-fw</icon>
+        <action>ChapeuSeletor</action>
+    </menuitem>
+
+    <menuitem label='Fotos da Escola e Alunos'>
+        <icon>fa:camera-retro fa-fw</icon>
+        <action>FotosDaEscola</action>
+    </menuitem>
+
     // Final da Administração de Hogwarts
+
     // Dev
     <menuitem label='Desenvolvedor'>
         <icon>fa:laptop fa-fw</icon>
@@ -42,9 +59,11 @@
             <icon>fa:cog fa-fw</icon>
             <action>ConexaoManual</action>
             </menuitem>
-            <menuitem label='SaibaMais'>
-            <icon>fa:book fa-fw</icon>
-            <action>SaibaMais</action>
+
+            <menuitem label="Agradecimentos">
+                <icon>fa:chess-rook fa-fw</icon>
+                <action>SaibaMais</action>
+                <title>Agradecimentos</title>
             </menuitem>
         </menu>
     </menuitem>

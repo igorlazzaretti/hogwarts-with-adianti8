@@ -5,9 +5,11 @@
 
     O alimente com os comandos SQL que estão em app/database/hogwartsdb.sql
 
+    Commits:
+    
+ :european_castle: Hogwarts School with Adianti 8
+ Update:
 
-    Texto para Commits:
-    :man_technologist: Hogwarts School with Adianti 8
  -->
 
 ## Hogwarts School with Adianti 8

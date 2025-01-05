@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotos da Escola</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="width: 50%; margin:auto">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <!--[indicator]-->
+        <li data-target="#carousel-example-generic" data-slide-to="{$index}" class="{$class}"></li>
+        <!--[/indicator]-->
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <!--[slide]-->
+        <div class="carousel-item {$class}">
+            <img src="{$image}" alt="..." style="width:120%">
+            <div class="carousel-caption">
+                {$caption}
+            </div>
+        </div>
+        <!--[/slide]-->
+    </div>
+
+    <!-- Controls -->
+    <a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
