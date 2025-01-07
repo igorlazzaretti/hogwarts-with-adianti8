@@ -20,4 +20,24 @@ return [
     'pass'  =>  'Admin#Senha88',  // Senha do MySQL (em branco por padrão no XAMPP)
     'type'  =>  'mysql',          // Tipo de banco de dados (mysql)
     'prep'  =>  '1',              // Preparar statements (1 para ativar)
- */
+
+
+
+    // Configurações no Linux (Fedora) SQLite
+
+    'host' => 'localhost',
+    'port' => '5432',
+    'name' => 'app/database/hogwartsdb.db',
+    'user' => '',
+    'pass' => '',
+    'type' => 'sqlite',
+    'prep' => '1'
+
+    ];
+    
+    // Navegue até app/database e execute o seguinte comando no terminal:
+    $ sqlite3 hogwartsdb.db
+    // Agora alimente o banco com instruçõoes SQL:
+    $ sqlite3 hogwartsdb.db < hogwartsdb.sql
+
+    */
