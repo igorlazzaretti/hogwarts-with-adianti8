@@ -36,6 +36,20 @@ INSERT INTO Aluno (nome, idade, casa, ano) VALUES
 ('Draco Malfoy', 11, 'Sonserina', 1),
 ('Cedrico Diggory', 14, 'Lufa-Lufa', 4);
 
+-- Criação da tabela TacaDasCasas
+CREATE TABLE TacaDasCasas (
+    id SERIAL PRIMARY KEY,
+    casa VARCHAR(50) NOT NULL UNIQUE,
+    pontos INTEGER NOT NULL DEFAULT 0
+);
+
+-- Inserção inicial das casas com pontos na tabela TacaDasCasas
+INSERT INTO TacaDasCasas (casa, pontos) VALUES
+('Lufa-Lufa', 60),
+('Grifinória', 40),
+('Sonserina', 35),
+('Corvinal', 20);
+
 -- Inserção de dados de exemplo na tabela Professor
 INSERT INTO Professor (nome, materia_id) VALUES
 ('Minerva McGonagall', 1),  -- Transfiguração (1º ano)

@@ -34,11 +34,10 @@ class AlunosCadastrar extends TPage
         $this->form->generateAria(); // automatic aria-label
 
         // create the form fields
-        $nome        = new TEntry('nome');
-        $age         = new TEntry('idade');
-        $ano         = new TCombo('ano');
-        $casa        = new TCombo('casa');
-
+        $nome = new TEntry('nome');
+        $age  = new TEntry('idade');
+        $ano  = new TCombo('ano');
+        $casa = new TCombo('casa');
 
         $age->setNumericMask(0, ',', '.', true);
         $age->setSize  ('45%');
@@ -85,8 +84,8 @@ class AlunosCadastrar extends TPage
     }
 
     /**
-     * Simulates an save button
-     * Show the form content
+     *  Método onSend()
+     *  Simulates an save button, show the form content
      */
     public function onSend($param)
     {
@@ -110,11 +109,11 @@ class AlunosCadastrar extends TPage
             $this->form->setData($data);
 
             // cria uma string com os valores dos elementos do formulário
-            $message  = 'Você cadastrou o bruxo:<br>';
-            $message .= 'Nome: ' . $data->nome . '<br>';
+            $message  = 'Você cadastrou o bruxo:    <br>';
+            $message .= 'Nome: '  . $data->nome .  '<br>';
             $message .= 'Idade: ' . $data->idade . '<br>';
-            $message .= 'Ano: ' . $data->ano . '<br>';
-            $message .= 'Casa: ' . $data->casa . '<br>';
+            $message .= 'Ano: '   . $data->ano .   '<br>';
+            $message .= 'Casa: '  . $data->casa .  '<br>';
 
             // exibe a mensagem
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
@@ -129,7 +128,8 @@ class AlunosCadastrar extends TPage
         }
     }
 
-    /**  Método onSuccess()
+    /**
+    *  Método onSuccess()
     *  Se Aluno cadastrado com sucesso, recarrega a datagrid para o usuário
     */
     public function onSuccess()

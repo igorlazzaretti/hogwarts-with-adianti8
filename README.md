@@ -1,12 +1,16 @@
 <!--
     Instruções Iniciais
 
-    Configure o Banco de Dados
-
-    O alimente com os comandos SQL que estão em app/database/hogwartsdb.sql
+    Opção SQLite:
+      Pelo terminal acesse a pasta app/database
+      Crie o banco de dados assim
+      $ sqlite3 hogwartsdb.db
+      Alimente o banco de dados assim
+      $ sqlite3 hogwartsdb.db < hogwartsdb.sql
+      Configure o arquivo app/config/hogwartsdb
 
     Commits:
-    
+
  :european_castle: Hogwarts School with Adianti 8
  Update:
 

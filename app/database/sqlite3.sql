@@ -27,7 +27,18 @@ CREATE TABLE Funcionario (
     nome  VARCHAR(255) NOT NULL,
     cargo VARCHAR(255) NOT NULL
 );
-
+-- Criação da tabela TacaDasCasas
+CREATE TABLE TacaDasCasas (
+    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+    casa   TEXT    NOT NULL    UNIQUE,
+    pontos INTEGER NOT NULL    DEFAULT  0
+);
+-- Inserção inicial das casas com pontos na tabela TacaDasCasas
+INSERT INTO TacaDasCasas (casa, pontos) VALUES
+('Lufa-Lufa',  60),
+('Grifinória', 40),
+('Sonserina',  35),
+('Corvinal',   20);
 -- Inserção de dados de exemplo na tabela Aluno
 INSERT INTO Aluno (nome, idade, casa, ano) VALUES
 ('Harry Potter',     11, 'Grifinória', 1),

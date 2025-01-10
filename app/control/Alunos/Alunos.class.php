@@ -6,6 +6,7 @@ use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Core\AdiantiCoreTranslator;
 use Adianti\Database\TDatabase;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Container\THBox;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
@@ -14,6 +15,7 @@ use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Dialog\TToast;
+use Adianti\Widget\Form\TButton;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 
@@ -30,10 +32,10 @@ class Alunos extends TPage
 
         // create the datagrid columns
         $id = new TDataGridColumn('id', 'Nro', 'left', '10%');
-        $name  = new TDataGridColumn  ( 'name',  'Bruxo(a)',    'left',   '25%');
-        $age  = new TDataGridColumn   ( 'age',   'Idade',       'left',   '20%');
-        $year  = new TDataGridColumn  ( 'year',  'Ano Escolar', 'left',   '20%');
-        $house  = new TDataGridColumn ( 'house', 'Casa',        'left',   '25%');
+        $name  = new TDataGridColumn('name',  'Bruxo(a)',    'left',   '25%');
+        $age  = new TDataGridColumn('age',   'Idade',       'left',   '20%');
+        $year  = new TDataGridColumn('year',  'Ano Escolar', 'left',   '20%');
+        $house  = new TDataGridColumn('house', 'Casa',        'left',   '25%');
 
 
         // add the columns to the datagrid, with actions on column titles, passing parameters
@@ -43,22 +45,22 @@ class Alunos extends TPage
         $this->datagrid->addColumn($house);
 
         // creates two datagrid actions
-        $action1 = new TDataGridAction([$this, 'onView'],[
+        $action1 = new TDataGridAction([$this, 'onView'], [
             'id'    => '{id}',
             'nome'  => '{name}',
             'idade' => '{age}',
             'casa'  => '{house}',
             'ano'   => '{year}'
         ]);
-        $action2 = new TDataGridAction([$this, 'onSubject'],[
+        $action2 = new TDataGridAction([$this, 'onSubject'], [
             'nome' => '{name}',
             'ano'  => '{year}'
         ]);
-        $action3 = new TDataGridAction([$this, 'onDelete'],[
+        $action3 = new TDataGridAction([$this, 'onDelete'], [
             'id'    => '{id}',
             'nome'  => '{name}',
         ]);
-        $action4 = new TDataGridAction([$this, 'onEdit'],[
+        $action4 = new TDataGridAction([$this, 'onEdit'], [
             'id'    => '{id}',
             'nome'  => '{name}',
         ]);
@@ -87,8 +89,7 @@ class Alunos extends TPage
             $result = $conn->query('SELECT
                 id, nome, idade, casa, ano FROM aluno ORDER BY id');
 
-            foreach ($result as $row)
-            {
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
@@ -99,23 +100,38 @@ class Alunos extends TPage
             }
 
             TTransaction::close();
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
 
+        // Botão Cadastrar Aluno no topo da página
+        $button = new TButton('cadastrar_novo_aluno');
+        $button->setLabel('Cadastrar Aluno');
+        $button->setImage('fa:plus green');
+        $button->setAction(new TAction([$this, 'onCreateAluno']), 'Cadastrar Novo Aluno');
+
         $panel = new TPanelGroup();
         $panel->add($this->datagrid)->style = 'overflow-x:auto';
+        $panel->addHeaderWidget(THBox::pack($button));
         $panel->addFooter('Alunos de Hogwarts School of Wizardry and Witchcraft');
-
-        // wrap the page content using vertical box
+        $form = new TForm('form_alunos');
+        $form->setFields([$button]);
+        // Wrap the page content using vertical box
         $vbox = new TVBox;
         $vbox->style = 'width: 100%';
         $vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $vbox->add($panel);
+        $vbox->add($form);
         parent::add($vbox);
     }
 
+    /**
+     * Método onCreateAluno()
+     * Redireciona para a página de cadastro de aluno
+     */
+    public function onCreateAluno() {
+        AdiantiCoreApplication::gotoPage('AlunosCadastrar', 'onCreateAluno');
+    }
 
     /**
      *  Método onView()
@@ -163,7 +179,6 @@ class Alunos extends TPage
             }
 
             TTransaction::close();
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         } finally {
@@ -179,7 +194,6 @@ class Alunos extends TPage
         $name   = $param['name'];
         // shows a dialog to the user
         new TQuestion(('Quer mesmo deletar ' . $name . '?'), $action);
-
     }
 
     /**
@@ -187,8 +201,7 @@ class Alunos extends TPage
      */
     public function Delete($param)
     {
-        try
-        {
+        try {
             $key = $param['key']; // get the parameter $key
             TTransaction::open('hogwartsdb'); // open a transaction with database
             $conn = TTransaction::get(); // get the database connection
@@ -242,8 +255,7 @@ class Alunos extends TPage
             $result = $conn->query('SELECT
                 id, nome, idade, casa, ano FROM aluno ORDER BY id');
 
-            foreach ($result as $row)
-            {
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
@@ -254,10 +266,8 @@ class Alunos extends TPage
             }
 
             TTransaction::close();
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
-
     }
 }

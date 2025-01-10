@@ -4,19 +4,11 @@
         <icon>fa:chess-rook fa-fw</icon>
         <action>InicioDaJornada</action>
     </menuitem>
+    
     <!-- Alunos -->
     <menuitem label='Alunos'>
-    <icon>fa:bolt-lightning fa-fw</icon>
-    <menu>
-        <menuitem label='Alunos'>
-            <icon>fa:bolt-lightning fa-fw</icon>
-            <action>Alunos</action>
-        </menuitem>
-        <menuitem label='Cadastrar Aluno'>
-            <icon>fa:bolt-lightning fa-fw</icon>
-            <action>AlunosCadastrar</action>
-        </menuitem>
-    </menu>
+        <icon>fa:bolt-lightning fa-fw</icon>
+        <action>Alunos</action>
     </menuitem>
 
     <menuitem label='Professor'>
