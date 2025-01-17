@@ -1,13 +1,13 @@
 <?php
 return [
-    // Configurações do banco de dados no Windows (XAMPP)
-    'host' => 'localhost',
-    'port' => '5432',
-    'name' => 'app/database/hogwartsdb.db',
-    'user' => '',
-    'pass' => '',
-    'type' => 'sqlite',
-    'prep' => '1'
+    // Configurações do banco de dados PostgreSQL
+    'host' => '10.88.0.77',   // endereço do servidor PostgreSQL
+    'port' => '5432',        // porta do PostgreSQL
+    'name' => 'hogwartsdb',  // nome do banco de dados
+    'user' => 'postgres', // usuário do banco de dados
+    'pass' => 'postgres',   // senha do banco de dados
+    'type' => 'pgsql',       // tipo do banco de dados
+    'prep' => '1'            // usar prepared statements
 ];
 
 /**

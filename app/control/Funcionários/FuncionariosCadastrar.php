@@ -17,7 +17,7 @@ use Adianti\Widget\Util\TDropDown;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class AlunosCadastrar extends TPage
+class FuncionariosCadastrar extends TPage
 {
     private $form;
 
@@ -29,49 +29,15 @@ class AlunosCadastrar extends TPage
     {
         parent::__construct();
         // creates the form
-        $this->form = new TModalForm('form_alunos_cadastrar');
-        $this->form->setFormTitle('Cadastrar Alunos');
+        $this->form = new TModalForm('form_funcionarios_cadastrar');
+        $this->form->setFormTitle('Cadastrar Funcionário(a)');
 
         // Adicione os campos do formulário aqui
         $nome = new TEntry('nome');
-        $age = new TCombo('idade');
-        $age->addItems([
-            '11' => '11 anos',
-            '12' => '12 anos',
-            '13' => '13 anos',
-            '14' => '14 anos',
-            '15' => '15 anos',
-            '16' => '16 anos',
-            '17' => '17 anos',
-            '18' => '18 anos',
-            '19' => '19 anos',
-            '20' => '20 anos',
-        ]);
-        $age->setValue('11');
-
-        $year = new TCombo('ano');
-        $year->addItems([
-            '1' => '1º Ano',
-            '2' => '2º Ano',
-            '3' => '3º Ano',
-            '4' => '4º Ano',
-        ]);
-        $year->setValue('1');
-
-        $house = new TCombo('casa');
-        // Adiciona opções para o campo 'casa'
-        $house->addItems([
-            'Grifinória' => 'Grifinória',
-            'Sonserina' => 'Sonserina',
-            'Corvinal' => 'Corvinal',
-            'Lufa-Lufa' => 'Lufa-Lufa'
-        ]);
-        $house->setValue('Lufa-Lufa');
+        $cargo = new TEntry('cargo');
 
         $this->form->addRowField([new TLabel('Nome')],  $nome,   true);
-        $this->form->addRowField([new TLabel('Idade')], $age,    true);
-        $this->form->addRowField([new TLabel('Ano')],   $year,   true);
-        $this->form->addRowField([new TLabel('Casa')],  $house,  true);
+        $this->form->addRowField([new TLabel('Cargo')], $cargo,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
 
@@ -90,13 +56,13 @@ class AlunosCadastrar extends TPage
 
 
             // Verifica se todos os campos obrigatórios estão preenchidos
-            if (empty($data->nome) || empty($data->idade) || empty($data->ano) || empty($data->casa)) {
-                throw new Exception('Todos os campos são obrigatórios.');
+            if (empty($data->nome) || empty($data->cargo) ) {
+                throw new Exception('Os campos nome e cargo são obrigatórios.');
             }
 
-            $alunos = new Aluno;
-            $alunos->fromArray((array) $data);
-            $alunos->store(); // armazena o objeto no banco de dados
+            $funcionarios = new Funcionario;
+            $funcionarios->fromArray((array) $data);
+            $funcionarios->store(); // armazena o objeto no banco de dados
 
             TTransaction::close(); // fecha a transação
 
@@ -105,16 +71,15 @@ class AlunosCadastrar extends TPage
 
             // cria uma string com os valores dos elementos do formulário
             $message  = 'Você cadastrou o(a) Aluno(a):  <br>';
-            $message .= 'Nome: '    . $data->nome .  '<br>';
-            $message .= 'Idade: '   . $data->idade . '<br>';
-            $message .= 'Ano: '     . $data->ano .   '<br>';
-            $message .= 'Casa: '    . $data->casa .  '<br>';
+            $message .= 'Nome: '    . $data->nome .    '<br>';
+            $message .= 'Cargo: '   . $data->cargo .   '<br>';
+
 
             // exibe a mensagem
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Aluno(a) cadastrado(a) com sucesso!', 'top right', 'far:check-circle');
+            TToast::show('success', 'Funcionário(a) cadastrado(a) com sucesso!', 'top right', 'far:check-circle');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro
@@ -123,10 +88,10 @@ class AlunosCadastrar extends TPage
 
     /**
      *  Método onSuccess()
-     *  Se Aluno cadastrado com sucesso, recarrega a datagrid para o usuário
+     *  Se Funcionário cadastrado com sucesso, recarrega a datagrid para o usuário
      */
     public function onSuccess()
     {
-        AdiantiCoreApplication::gotoPage('Alunos', 'onReload');
+        AdiantiCoreApplication::gotoPage('Funcionarios', 'onReload');
     }
 }

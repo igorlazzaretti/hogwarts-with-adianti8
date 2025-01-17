@@ -152,7 +152,7 @@ class Materias extends TPage
      */
     public static function onSubject($param)
     {
-        new TMessage('info', 'Estes são os contúdos desta matéria: <br>
+        new TMessage('info',   'Estes são os contúdos desta matéria: <br>
                                 Desvendar a borra de café do fundo da xícara, <br>
                                 Uso do viratempo para assistir muitas aulas, <br>
                                 Desaparatar dentro de Hogwarts, com Dumbledore (mistério).');
@@ -186,10 +186,7 @@ class Materias extends TPage
 
             TTransaction::close(); // close the transaction
 
-            $pos_action = new TAction([__CLASS__, 'onReload']);
-            new TMessage('info', AdiantiCoreTranslator::translate('Subject deleted.'), $pos_action); // success message
-
-            TToast::show('warning', 'Matéria deletada com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Matéria deletada com sucesso!', 'top right', 'far:check-circle');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();

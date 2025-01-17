@@ -105,7 +105,7 @@ class Professores extends TPage
         $button = new TButton('cadastrar_materia');
         $button->setLabel('Cadastrar Matéria');
         $button->setImage('fa:plus green');
-        $button->setAction(new TAction([$this, 'onCreateMateria']), 'Cadastrar Novo Professor');
+        $button->setAction(new TAction([$this, 'onCreateProfessor']), 'Cadastrar Novo Professor');
 
 
         $panel = new TPanelGroup();
@@ -132,7 +132,7 @@ class Professores extends TPage
      *  Método onView()
      *  Cadastra um novo professor
      */
-    public function onCreateMateria($param)
+    public function onCreateProfessor($param)
     {
         AdiantiCoreApplication::gotoPage('ProfessoresCadastrar', 'onCreate');
     }
@@ -187,14 +187,11 @@ class Professores extends TPage
             $conn = TTransaction::get(); // get the database connection
 
             // Executa a query SQL para deletar a Matéria
-            $conn->exec("DELETE FROM materia WHERE id = {$key}");
+            $conn->exec("DELETE FROM professor WHERE id = {$key}");
 
             TTransaction::close(); // close the transaction
 
-            $pos_action = new TAction([__CLASS__, 'onReload']);
-            new TMessage('info', AdiantiCoreTranslator::translate('Subject deleted.'), $pos_action); // success message
-
-            TToast::show('warning', 'Matéria deletada com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Professor(a) deletado(a) com sucesso!', 'top right', 'far:check-circle');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();
@@ -233,14 +230,14 @@ class Professores extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, ano FROM materia ORDER BY id');
+                id, nome, materia_id FROM professor ORDER BY id');
 
             foreach ($result as $row)
             {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->year = $row['ano'];
+                $item->year = $row['materia_id'];
                 $this->datagrid->addItem($item);
             }
 
@@ -248,6 +245,8 @@ class Professores extends TPage
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
+            TTransaction::rollback(); // desfaz a transação em caso de erro
+
         }
 
     }

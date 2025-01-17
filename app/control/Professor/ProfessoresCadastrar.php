@@ -70,7 +70,7 @@ class ProfessoresCadastrar extends TPage
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Professor(a) cadastrado(a) com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('success', 'Professor(a) cadastrado(a) com sucesso!', 'top right', 'far:check-circle');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro
@@ -78,7 +78,7 @@ class ProfessoresCadastrar extends TPage
     }
     /**
      *  Método onSuccess()
-     *  Se matéria cadastrada com sucesso, recarrega a datagrid para o usuário
+     *  Se professor cadastrada com sucesso, recarrega a datagrid para o usuário
      */
     public function onSuccess()
     {

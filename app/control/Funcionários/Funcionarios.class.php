@@ -134,7 +134,7 @@ class Funcionarios extends TPage
      */
     public function onCreateFuncionario($param)
     {
-        AdiantiCoreApplication::gotoPage('ProfessoresCadastrar', 'onCreate');
+        AdiantiCoreApplication::gotoPage('FuncionariosCadastrar', 'onCreate');
     }
 
     /**
@@ -170,12 +170,14 @@ class Funcionarios extends TPage
         $action->setParameters($param); // pass the key parameter ahead
 
         $name = $param['name'];
+
         // shows a dialog to the user
         new TQuestion(('Quer mesmo deletar ' . $name . '?'), $action);
     }
 
     /**
-     * Delete a record
+     *  Método Delete()
+     *  Deleta um Funcionário
      */
     public function Delete($param)
     {
@@ -187,14 +189,11 @@ class Funcionarios extends TPage
             $conn = TTransaction::get(); // get the database connection
 
             // Executa a query SQL para deletar a Matéria
-            $conn->exec("DELETE FROM materia WHERE id = {$key}");
+            $conn->exec("DELETE FROM funcionario WHERE id = {$key}");
 
             TTransaction::close(); // close the transaction
 
-            $pos_action = new TAction([__CLASS__, 'onReload']);
-            new TMessage('info', AdiantiCoreTranslator::translate('Subject deleted.'), $pos_action); // success message
-
-            TToast::show('warning', 'Matéria deletada com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Funcionário(a) deletado(a) com sucesso!', 'bottom right', 'far:check-circle');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();
@@ -212,7 +211,7 @@ class Funcionarios extends TPage
                 $id = $param['id'];
 
                 // Redireciona para a página de edição com o ID do aluno
-                AdiantiCoreApplication::gotoPage('MateriasEdit', 'onEdit', ['id' => $id]);
+                AdiantiCoreApplication::gotoPage('FuncionariosEdit', 'onEdit', ['id' => $id]);
             } else {
                 new TMessage('error', 'ID do aluno não fornecido.');
             }
@@ -233,14 +232,14 @@ class Funcionarios extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, ano FROM materia ORDER BY id');
+                id, nome, cargo FROM funcionario ORDER BY id');
 
             foreach ($result as $row)
             {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->cargo = $row['ano'];
+                $item->cargo = $row['cargo'];
                 $this->datagrid->addItem($item);
             }
 
@@ -249,6 +248,5 @@ class Funcionarios extends TPage
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
-
     }
 }

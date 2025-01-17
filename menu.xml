@@ -4,7 +4,7 @@
         <icon>fa:chess-rook fa-fw</icon>
         <action>InicioDaJornada</action>
     </menuitem>
-    
+
     <!-- Alunos -->
     <menuitem label='Alunos'>
         <icon>fa:bolt-lightning fa-fw</icon>
@@ -50,6 +50,11 @@
             <menuitem label='Conexão com o Banco de Dados'>
             <icon>fa:cog fa-fw</icon>
             <action>ConexaoManual</action>
+            </menuitem>
+
+            <menuitem label='Join Manual'>
+            <icon>fa:cog fa-fw</icon>
+            <action>JoinManual</action>
             </menuitem>
 
             <menuitem label="Agradecimentos">

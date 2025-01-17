@@ -16,6 +16,7 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TButton;
+use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 
@@ -130,7 +131,7 @@ class Alunos extends TPage
      * Redireciona para a página de cadastro de aluno
      */
     public function onCreateAluno() {
-        AdiantiCoreApplication::gotoPage('AlunosCadastrar', 'onCreateAluno');
+        AdiantiCoreApplication::gotoPage('AlunosCadastrar', 'onCreate');
     }
 
     /**
@@ -211,10 +212,7 @@ class Alunos extends TPage
 
             TTransaction::close(); // close the transaction
 
-            $pos_action = new TAction([__CLASS__, 'onReload']);
-            new TMessage('info', AdiantiCoreTranslator::translate('Wizard deleted.'), $pos_action); // success message
-
-            TToast::show('warning', 'Aluno deletado com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Aluno deletado com sucesso!', 'top right', 'far:check-circle');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();

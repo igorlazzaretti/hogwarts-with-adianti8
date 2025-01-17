@@ -9,6 +9,7 @@ use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Wrapper\BootstrapFormBuilder;
 
 class AlunosEdit extends TWindow
 {

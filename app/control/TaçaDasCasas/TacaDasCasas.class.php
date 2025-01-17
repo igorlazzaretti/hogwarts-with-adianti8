@@ -2,6 +2,7 @@
 
 use Adianti\Control\TPage;
 use Adianti\Widget\Container\TPanelGroup;
+use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Util\TProgressBar;
