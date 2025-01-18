@@ -22,26 +22,31 @@ class TacaDasCasas extends TPage
         $this->datagrid->style = 'width: 100%';
 
         // add the columns
-        $this->datagrid->addColumn( new TDataGridColumn('task',  'Casa', 'left',   '40%') );
-        $column = $this->datagrid->addColumn( new TDataGridColumn('percent', 'Pontos', 'center', '40%') );
+        $this->datagrid->addColumn( new TDataGridColumn('task',  'Casa', 'left',   '30%') );
+        $column = $this->datagrid->addColumn( new TDataGridColumn('percent', 'Pontos', 'center', '70%') );
 
         // define the transformer method over image
-        $column->setTransformer( function($percent) {
+        $column->setTransformer( function($percent, $object, $row) {
             $bar = new TProgressBar;
             $bar->setMask('~ <b>{value}</b> pontos');
             $bar->setValue($percent);
 
-            if ($percent == 100) {
-                $bar->setClass('warning');
-            }
-            else if ($percent >= 75) {
-                $bar->setClass('danger');
-            }
-            else if ($percent >= 50) {
-                $bar->setClass('info');
-            }
-            else {
-                $bar->setClass('success');
+            // Define a classe da barra de progresso com base na casa
+            switch ($object->task) {
+                case 'Lufa-Lufa':
+                    $bar->setClass('warning'); // Verde
+                    break;
+                case 'Grifinória':
+                    $bar->setClass('danger');  // Vermelho
+                    break;
+                case 'Corvinal':
+                    $bar->setClass('info');   // Azul
+                    break;
+                case 'Sonserina':
+                    $bar->setClass('success'); // Amarelo
+                    break;
+                default:
+                    $bar->setClass('primary'); // Azul escuro (padrão)
             }
             return $bar;
         });

@@ -11,8 +11,8 @@
 
     Commits:
 
- :european_castle: Hogwarts School with Adianti 8
- Update:
+:european_castle: Hogwarts School with Adianti 8
+Update:
 
  -->
 
