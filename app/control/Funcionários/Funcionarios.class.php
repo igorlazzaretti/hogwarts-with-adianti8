@@ -193,7 +193,7 @@ class Funcionarios extends TPage
 
             TTransaction::close(); // close the transaction
 
-            TToast::show('warning', 'Funcionário(a) deletado(a) com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('warning', 'Funcionário(a) deletado(a) com sucesso!', 'bottom right', 'fa:circle-check');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();

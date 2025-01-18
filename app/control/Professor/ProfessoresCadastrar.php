@@ -70,7 +70,7 @@ class ProfessoresCadastrar extends TPage
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Professor(a) cadastrado(a) com sucesso!', 'top right', 'far:check-circle');
+            TToast::show('success', 'Professor(a) cadastrado(a) com sucesso!', 'top right', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

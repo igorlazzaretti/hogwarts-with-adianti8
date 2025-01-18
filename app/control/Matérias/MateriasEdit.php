@@ -91,7 +91,7 @@ class MateriasEdit extends TWindow
             TTransaction::close(); // fecha a transação
 
             new TMessage('info', 'Matéria atualizada com sucesso!', new TAction([$this, 'onSuccess']));
-            TToast::show('success', 'Aluno salvo com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('success', 'Aluno salvo com sucesso!', 'bottom right', 'fa:circle-check');
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());

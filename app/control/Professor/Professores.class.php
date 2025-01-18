@@ -191,7 +191,7 @@ class Professores extends TPage
 
             TTransaction::close(); // close the transaction
 
-            TToast::show('warning', 'Professor(a) deletado(a) com sucesso!', 'top right', 'far:check-circle');
+            TToast::show('warning', 'Professor(a) deletado(a) com sucesso!', 'top right', 'fa:circle-check');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();

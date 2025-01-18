@@ -93,7 +93,7 @@ class FuncionariosEdit extends TPage
 
             TTransaction::close(); // fecha a transação
 
-            TToast::show('success', 'Funcionário(a) salvo com sucesso!', 'top right', 'far:check-circle');
+            TToast::show('success', 'Funcionário(a) salvo com sucesso!', 'top right', 'fa:circle-check');
             self::onSuccess();
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());

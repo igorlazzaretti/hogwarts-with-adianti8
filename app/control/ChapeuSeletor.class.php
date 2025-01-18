@@ -51,8 +51,8 @@ class ChapeuSeletor extends TPage
         $casaEscolhida = $casas[array_rand($casas)];
 
         $message = "Hummmmmm... {$nome},  <br>
-                    Interessante... sua casa será...
-                    ... {$casaEscolhida}!!!";
+                    Interessante... sua casa será... <br>
+                    <b>{$casaEscolhida}</b>!!!";
 
         if (empty($nome)) {
             new TMessage('error', 'Ops! Você precisa digitar seu nome para ser escolhido!');
@@ -71,13 +71,13 @@ class ChapeuSeletor extends TPage
         $nome = $param['nome'];
         $casaEscolhida = $param['casa'];
         if ($casaEscolhida == 'Grifinória') {
-            TToast::show('error', "Parabéns! $nome, sua casa será Grifinória!", 'top right', 'far:hat-wizard');
+            TToast::show('error', "Parabéns! $nome, sua casa será <b>Grifinória!</b>", 'top right', 'fa:hat-wizard');
         } else if ($casaEscolhida == 'Lufa-Lufa'){
-            TToast::show('warning', "Parabéns! $nome, sua casa será Lufa-Lufa!", 'top right', 'far:hat-wizard');
+            TToast::show('warning', "Parabéns! $nome, sua casa será <b>Lufa-Lufa</b>!", 'top right', 'fa:hat-wizard');
         } else if ($casaEscolhida == 'Corvinal'){
-            TToast::show('info', "Parabéns! $nome, sua casa será Corvinal!", 'top right', 'far:hat-wizard');
+            TToast::show('info', "Parabéns! $nome, sua casa será <b>Corvinal!</b>", 'top right', 'fa:hat-wizard');
         } else if ($casaEscolhida == 'Sonserina'){
-            TToast::show('success', "Parabéns! $nome, sua casa será Sonserina!", 'top right', 'far:hat-wizard');
+            TToast::show('success', "Parabéns! $nome, sua casa será <b>Sonserina!</b>", 'top right', 'fa:hat-wizard');
         }
     }
 }

@@ -73,7 +73,7 @@ class MateriasCadastrar extends TWindow
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Matéria cadastrada com sucesso!', 'bottom right', 'far:check-circle');
+            TToast::show('success', 'Matéria cadastrada com sucesso!', 'bottom right', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

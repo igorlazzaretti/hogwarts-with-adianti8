@@ -212,7 +212,7 @@ class Alunos extends TPage
 
             TTransaction::close(); // close the transaction
 
-            TToast::show('warning', 'Aluno deletado com sucesso!', 'top right', 'far:check-circle');
+            TToast::show('warning', 'Aluno deletado com sucesso!', 'top right', 'fa:circle-check');
 
             // Chama o método onReload para recarregar a lista
             self::onReload();
