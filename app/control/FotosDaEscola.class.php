@@ -14,8 +14,13 @@ class FotosDaEscola extends TPage
         parent::__construct();
 
         $images = [];
-        $images   [] = ['index' => '0', 'image' => "app/images/hog1.webp", 'caption' => 'Image 1', 'class' => 'active'];
-        $images   [] = ['index' => '0', 'image' => "app/images/hog1.webp", 'caption' => '', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto1.png", 'caption' => '1', 'class' => 'active'];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto2.webp", 'caption' => '2', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto3.jpg", 'caption' => '3', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto4.jpg", 'caption' => '4', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto5.jpg", 'caption' => '5', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto6.webp", 'caption' => '6', 'class' => ''];
+        $images[] = ['index' => '0', 'image' => "app/images/carrossel/foto7.png", 'caption' => '7', 'class' => ''];
 
         $html = new THtmlRenderer('app/resources/fotos-da-escola.html');
         $html->enableSection('main', []);

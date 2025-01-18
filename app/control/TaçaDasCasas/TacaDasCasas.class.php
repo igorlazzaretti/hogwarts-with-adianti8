@@ -1,10 +1,15 @@
 <?php
 
+use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Database\TTransaction;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridColumn;
+use Adianti\Widget\Dialog\TMessage;
+use Adianti\Widget\Form\TButton;
+use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TProgressBar;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
@@ -22,11 +27,11 @@ class TacaDasCasas extends TPage
         $this->datagrid->style = 'width: 100%';
 
         // add the columns
-        $this->datagrid->addColumn( new TDataGridColumn('task',  'Casa', 'left',   '30%') );
-        $column = $this->datagrid->addColumn( new TDataGridColumn('percent', 'Pontos', 'center', '70%') );
+        $this->datagrid->addColumn(new TDataGridColumn('task',  'Casa', 'left',   '30%'));
+        $column = $this->datagrid->addColumn(new TDataGridColumn('percent', 'Pontos', 'center', '70%'));
 
         // define the transformer method over image
-        $column->setTransformer( function($percent, $object, $row) {
+        $column->setTransformer(function ($percent, $object, $row) {
             $bar = new TProgressBar;
             $bar->setMask('~ <b>{value}</b> pontos');
             $bar->setValue($percent);
@@ -54,49 +59,74 @@ class TacaDasCasas extends TPage
         // creates the datagrid model
         $this->datagrid->createModel();
 
+
+
+
+        $button = new TButton('dar_10_pontos_para_grifinória');
+        $button->setLabel('10 Pontos para a Grifinória');
+        $button->setImage('fa:plus green');
+        $button->setAction(new TAction([$this, 'on10pontosParaAGrifinoria']), '10 Pontos para a Grifinória');
+
+
+
         // wrap the page content using vertical box
         $vbox = new TVBox;
         $vbox->style = 'width: 100%';
         $vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
-        $vbox->add(TPanelGroup::pack(('Taça Das Casas de Hogwarts'), $this->datagrid,
-            'House Cup - Hogwarts School of Wizardry and Witchcraft'));
+        $vbox->add(TPanelGroup::pack(('Taça Das Casas de Hogwarts'),
+            $this->datagrid,
+            'House Cup - Hogwarts School of Wizardry and Witchcraft'
+        ));
+
         parent::add($vbox);
     }
 
     /**
-     * Load the data into the datagrid
+     *  Método onReload()
+     *  Load the data into the datagrid
      */
     function onReload()
     {
         $this->datagrid->clear();
+        // Start Populatin Data
+        try {
+            TTransaction::open('hogwartsdb');
+            $conn = TTransaction::get();
 
-        // add an regular object to the datagrid
-        $item = new StdClass;
-        $item->code      = '1';
-        $item->task      = 'Lufa-Lufa';
-        $item->percent   = '100';
-        $this->datagrid->addItem($item);
+            $result = $conn->query('SELECT id, casa, pontos FROM tacadascasas ORDER BY id');
 
-        // add an regular object to the datagrid
-        $item = new StdClass;
-        $item->code      = '2';
-        $item->task      = 'Grifinória';
-        $item->percent   = '80';
-        $this->datagrid->addItem($item);
+            foreach ($result as $row) {
+                $item = new StdClass;
+                $item->code    = $row['id'];
+                $item->task    = $row['casa'];
+                $item->percent = $row['pontos'];
 
-        // add an regular object to the datagrid
-        $item = new StdClass;
-        $item->code      = '3';
-        $item->task      = 'Corvinal';
-        $item->percent   = '60';
-        $this->datagrid->addItem($item);
+                $this->datagrid->addItem($item);
+            }
 
-        // add an regular object to the datagrid
-        $item = new StdClass;
-        $item->code      = '4';
-        $item->task      = 'Sonserina';
-        $item->percent   = '40';
-        $this->datagrid->addItem($item);
+            TTransaction::close();
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Function to add 10 points to Grifinória
+     */
+    public function on10pontosParaAGrifinoria()
+    {
+        try {
+            TTransaction::open('hogwartsdb');
+            $conn = TTransaction::get();
+
+            $conn->exec("UPDATE tacadascasas SET pontos = pontos + 10 WHERE casa = 'Grifinória'");
+
+            TTransaction::close();
+            $this->onReload();
+            new TMessage('info', '10 pontos adicionados para a Grifinória');
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
     }
 
     /**
