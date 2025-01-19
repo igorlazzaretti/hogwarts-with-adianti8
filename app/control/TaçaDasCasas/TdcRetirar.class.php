@@ -17,7 +17,7 @@ use Adianti\Widget\Util\TDropDown;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class TdcCadastrar extends TPage
+class TdcRetirar extends TPage
 {
     private $form;
 
@@ -29,7 +29,7 @@ class TdcCadastrar extends TPage
         parent::__construct();
         // creates the form
         $this->form = new TModalForm('form_alunos_cadastrar');
-        $this->form->setFormTitle('Adicionar Pontos');
+        $this->form->setFormTitle('Retirar Pontos');
 
         // Adiciona os campos do formulário aqui
         $pontos = new TCombo('pontos');
@@ -53,8 +53,8 @@ class TdcCadastrar extends TPage
         ]);
         $casa->setValue('Lufa-Lufa');
 
-        $this->form->addRowField([new TLabel('Idade')], $pontos,  true);
-        $this->form->addRowField([new TLabel('Casa')],  $casa,   true);
+        $this->form->addRowField([new TLabel('Pontos')], $pontos,  true);
+        $this->form->addRowField([new TLabel('Casa')],   $casa,    true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left', 'btn-danger');
@@ -81,7 +81,7 @@ class TdcCadastrar extends TPage
         $existingRecord = TacaCasas::where('casa', '=', $data->casa)->first();
         if ($existingRecord) {
             // Atualiza os pontos da casa existente
-            $existingRecord->pontos += $data->pontos;
+            $existingRecord->pontos -= $data->pontos;
             $existingRecord->store();
         } else {
             // Cria um novo registro para a casa
@@ -96,13 +96,13 @@ class TdcCadastrar extends TPage
         $this->form->setData($data);
 
         // cria uma string com os valores dos elementos do formulário
-        $message  = "Você adicionou {$data->pontos} pontos para a casa {$data->casa}!";
+        $message  = "Você retirou {$data->pontos} pontos para a casa {$data->casa}!";
 
         // exibe a mensagem
         new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Pontos adicionados com sucesso!', 'top right', 'fa:circle-check');
+            TToast::show('warning', 'Pontos retirados com sucesso!', 'top right', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

@@ -2,10 +2,13 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TTransaction;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
+use Adianti\Widget\Datagrid\TDataGridAction;
+use Adianti\Widget\Datagrid\TDataGridActionGroup;
 use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Form\TButton;
@@ -27,7 +30,7 @@ class TacaDasCasas extends TPage
         $this->datagrid->style = 'width: 100%';
 
         // add the columns
-        $this->datagrid->addColumn(new TDataGridColumn('task',  'Casa', 'left',   '30%'));
+        $this->datagrid->addColumn(new TDataGridColumn('task',  'Casa', 'left',   '15%'));
         $column = $this->datagrid->addColumn(new TDataGridColumn('percent', 'Pontos', 'center', '70%'));
 
         // define the transformer method over image
@@ -56,17 +59,38 @@ class TacaDasCasas extends TPage
             return $bar;
         });
 
+
+
+        // creates two datagrid actions
+        $action1 = new TDataGridAction([$this, 'onView']);
+        $action1->setField('code'); // Define the field for the action
+        $action2 = new TDataGridAction([$this, 'onAdd']);
+        $action2->setField('code'); // Define the field for the action
+        $action3 = new TDataGridAction([$this, 'onDrop']);
+        $action3->setField('code'); // Define the field for the action
+
+        $action1->setLabel('Dados da Casa');
+        $action1->setImage('fa:search #7C93CF');
+
+        $action2->setLabel('Adicionar Pontos');
+        $action2->setImage('far:plus green');
+
+        $action3->setLabel('Retirar Pontos');
+        $action3->setImage('fa:minus red');
+
+        $action_group = new TDataGridActionGroup('Ações', 'fa:trophy');
+        $action_group->addHeader('Visualizar Dados da Casa');
+        $action_group->addAction($action1);
+        $action_group->addHeader('A Hermione acertou mais uma pergunta?');
+        $action_group->addAction($action2);
+        $action_group->addSeparator();
+        $action_group->addHeader('Algum aluno está fora da cama denovo?');
+        $action_group->addAction($action3);
+        $this->datagrid->addActionGroup($action_group);
+
+
         // creates the datagrid model
         $this->datagrid->createModel();
-
-
-
-
-        $button = new TButton('dar_10_pontos_para_grifinória');
-        $button->setLabel('10 Pontos para a Grifinória');
-        $button->setImage('fa:plus green');
-        $button->setAction(new TAction([$this, 'on10pontosParaAGrifinoria']), '10 Pontos para a Grifinória');
-
 
 
         // wrap the page content using vertical box
@@ -77,6 +101,7 @@ class TacaDasCasas extends TPage
             $this->datagrid,
             'House Cup - Hogwarts School of Wizardry and Witchcraft'
         ));
+
 
         parent::add($vbox);
     }
@@ -128,7 +153,17 @@ class TacaDasCasas extends TPage
             new TMessage('error', $e->getMessage());
         }
     }
+    public function onView() {
+                // exibe a mensagem
+                new TMessage('warning', 'O estagiário ainda não fez esta ação.');
+    }
+    public function onAdd() {
+        AdiantiCoreApplication::gotoPage('TdcCadastrar', 'onAdd');
+    }
+    public function onDrop() {
+        AdiantiCoreApplication::gotoPage('TdcRetirar', 'onDrop');
 
+    }
     /**
      * shows the page
      */
