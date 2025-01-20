@@ -13,13 +13,20 @@ use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class MateriasEdit extends TPage
+class MateriasEdit extends TWindow
 {
     private $form;
 
     public function __construct()
     {
         parent::__construct();
+        parent::setTitle('Janela');
+        // parent::removePadding();
+        parent::removeTitleBar();
+        // parent::disableEscape();
+
+        parent::setSize(0.6, null); // use 0.6, 0.4 (for relative sizes 60%, 40%)
+
 
         $this->form = new TModalForm('form_materia');
         $this->form->setFormTitle('Editar Matéria');

@@ -1,9 +1,11 @@
 <?php
 
 use Adianti\Control\TAction;
+use Adianti\Control\TPage;
 use Adianti\Control\TWindow;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TCombo;
@@ -19,6 +21,7 @@ class MateriasCadastrar extends TPage
     public function __construct()
     {
         parent::__construct();
+        parent::setTargetContainer('adianti_right_panel');
 
         // Cria a janela
         $this->form = new TModalForm('form_materias');
@@ -86,5 +89,12 @@ class MateriasCadastrar extends TPage
     public function onSuccess()
     {
         AdiantiCoreApplication::gotoPage('Materias', 'onReload');
+    }
+    /**
+    * on close
+    */
+    public static function onClose($param)
+    {
+        TScript::create("Template.closeRightPanel()");
     }
 }
