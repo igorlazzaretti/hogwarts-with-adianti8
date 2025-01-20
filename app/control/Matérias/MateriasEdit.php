@@ -1,6 +1,7 @@
 <?php
 
 use Adianti\Control\TAction;
+use Adianti\Control\TPage;
 use Adianti\Control\TWindow;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TTransaction;
@@ -9,19 +10,19 @@ use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Form\TModalForm;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class MateriasEdit extends TWindow
+class MateriasEdit extends TPage
 {
     private $form;
 
     public function __construct()
     {
         parent::__construct();
-        parent::setSize(0.6, 0.5); // Define o tamanho da janela (60% da largura e 50% da altura)
-        parent::setTitle('Editar Matéria'); // Define o título da janela
 
-        $this->form = new BootstrapFormBuilder('form_materia');
+        $this->form = new TModalForm('form_materia');
+        $this->form->setFormTitle('Editar Matéria');
 
         $id = new TEntry('id');
         $nome = new TEntry('nome');
@@ -40,11 +41,12 @@ class MateriasEdit extends TWindow
         $ano->setValue('1');
         $id->setEditable(false);
 
-        $this->form->addFields([new TLabel('ID')], [$id]);
-        $this->form->addFields([new TLabel('Nome')], [$nome]);
-        $this->form->addFields([new TLabel('Ano')], [$ano]);
+        $this->form->addRowField('ID',   $id,   true);
+        $this->form->addRowField('Nome', $nome, true);
+        $this->form->addRowField('Ano',  $ano,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
     }
@@ -91,7 +93,7 @@ class MateriasEdit extends TWindow
             TTransaction::close(); // fecha a transação
 
             new TMessage('info', 'Matéria atualizada com sucesso!', new TAction([$this, 'onSuccess']));
-            TToast::show('success', 'Aluno salvo com sucesso!', 'bottom right', 'fa:circle-check');
+            TToast::show('success', 'Matéria salvo com sucesso!', 'top center', 'fa:circle-check');
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());

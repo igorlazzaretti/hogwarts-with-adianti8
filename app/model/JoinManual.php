@@ -11,34 +11,24 @@ class JoinManual extends TPage
 {
 
     public function __construct() {
+        parent::__construct();
         try {
-            TTransaction::open('hogwartsdb'); // Substitua 'seu_banco' pela sua conexão
+        TTransaction::open('hogwartsdb');
 
-            // Cria os repositórios
-            $professorRepository = new TRepository('professor');
-            $materiaRepository = new TRepository('materia');
+        $repository = new TRepository('Professor'); // Repositório da tabela principal
 
-            // Cria os critérios
-            $criteria = new TCriteria;
-            $criteria->add(new TFilter('professor.materia_id', '=', 'materia.id')); // JOIN
+        $criteria = new TCriteria;
+        $criteria->add(new TFilter('professor.materia_id', '=', 'Materia.id')); // JOIN com a tabela Materia
 
-            // Carrega os objetos
-            $objetos = $professorRepository->load($criteria, FALSE, $materiaRepository);
+        $objects = $repository->load($criteria); // Carrega os objetos Professor com o JOIN
 
-            // Exibe os resultados
-            if ($objetos) {
-                foreach ($objetos as $objeto) {
-                    $materia = $objeto->materia->nome; // Acessa o nome da matéria através do relacionamento
-                    $professor = $objeto->nome;
-                    echo "A matéria $materia é ministrada pelo professor $professor.<br>";
-                }
-            } else {
-                echo "Nenhum resultado encontrado.";
-            }
+        foreach ($objects as $object) {
+            echo $object->nome . ' - ' . $object->materia->nome . '<br>'; // Acessa os dados da tabela Materia
+        }
 
-            TTransaction::close();
+        TTransaction::close();
         } catch (Exception $e) {
-            new TMessage('error', $e->getMessage());
+        new TMessage('error', $e->getMessage());
         }
     }
 }

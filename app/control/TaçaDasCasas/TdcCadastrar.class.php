@@ -57,7 +57,7 @@ class TdcCadastrar extends TPage
         $this->form->addRowField([new TLabel('Casa')],  $casa,   true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']),    'fa:save');
-        $this->form->addAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left', 'btn-danger');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left', 'btn-danger');
 
         // add the form to the page
         parent::add($this->form);

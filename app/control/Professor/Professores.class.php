@@ -68,10 +68,10 @@ class Professores extends TPage
         $action4->setUseButton(TRUE);
 
         // add the actions to the datagrid
-        $this->datagrid->addAction($action1, '', 'fa:search blue');
-        $this->datagrid->addAction($action2, 'Curiosidade', 'fa:book purple');
-        $this->datagrid->addAction($action3, '', 'fa:trash red');
-        $this->datagrid->addAction($action4, '', 'fa:edit green');
+        $this->datagrid->addAction($action1, '',            'fa:search blue');
+        $this->datagrid->addAction($action2, 'Curiosidade', 'fa:book   purple');
+        $this->datagrid->addAction($action3, '',            'fa:trash  red');
+        $this->datagrid->addAction($action4, '',            'fa:edit   green');
 
 
         // creates the datagrid model
@@ -82,17 +82,39 @@ class Professores extends TPage
             TTransaction::open('hogwartsdb');
             $conn = TTransaction::get();
 
-            $result = $conn->query('SELECT
-                id, nome, materia_id FROM professor ORDER BY id');
+            // $result = $conn->query('SELECT
+            //     id, nome, materia_id FROM professor ORDER BY id');
 
-            foreach ($result as $row)
-            {
+            // foreach ($result as $row)
+            // {
+            //     $item = new StdClass;
+            //     $item->id = $row['id'];
+            //     $item->name = $row['nome'];
+            //     $item->materia = $row['materia_id'];
+            //     $this->datagrid->addItem($item);
+            // }
+
+
+            $sql = "SELECT Professor.*, Materia.nome AS materia_nome
+                    FROM Professor
+                    INNER JOIN Materia ON Professor.materia_id = Materia.id";
+
+            $result = $conn->query($sql);
+
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->year = $row['materia_id'];
+                $item->materia = $row['materia_nome'];
                 $this->datagrid->addItem($item);
             }
+
+
+
+
+
+
+
 
             TTransaction::close();
 
@@ -209,9 +231,9 @@ class Professores extends TPage
                 $id = $param['id'];
 
                 // Redireciona para a página de edição com o ID do aluno
-                AdiantiCoreApplication::gotoPage('MateriasEdit', 'onEdit', ['id' => $id]);
+                AdiantiCoreApplication::gotoPage('ProfessoresEdit', 'onEdit', ['id' => $id]);
             } else {
-                new TMessage('error', 'ID do aluno não fornecido.');
+                new TMessage('error', 'ID do professor não fornecido.');
             }
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
@@ -228,16 +250,17 @@ class Professores extends TPage
         try {
             TTransaction::open('hogwartsdb');
             $conn = TTransaction::get();
+            $sql = "SELECT Professor.*, Materia.nome AS materia_nome
+                    FROM Professor
+                    INNER JOIN Materia ON Professor.materia_id = Materia.id";
 
-            $result = $conn->query('SELECT
-                id, nome, materia_id FROM professor ORDER BY id');
+            $result = $conn->query($sql);
 
-            foreach ($result as $row)
-            {
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
-                $item->year = $row['materia_id'];
+                $item->materia = $row['materia_nome'];
                 $this->datagrid->addItem($item);
             }
 

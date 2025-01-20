@@ -48,6 +48,7 @@ class FuncionariosEdit extends TPage
         $this->form->addRowField('Cargo que ocupa',  $cargo,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
     }

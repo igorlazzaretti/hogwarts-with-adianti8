@@ -27,16 +27,28 @@ class ProfessoresCadastrar extends TPage
         // Adicione os campos do formulário aqui
         $nome = new TEntry('nome');
         $materia_id = new TCombo('materia_id');
-        $materia_id->addItems([
-            // ID  => Nome visto pelo usuário
-            '110' => 'Estudos Avançadíssimos em Magia',
-        ]);
-        $materia_id->setValue('110');
+        try {
+            TTransaction::open('hogwartsdb');
+            $materias = Materia::getObjects(); // Retrieves all Materia records
 
-        $this->form->addRowField([ new TLabel('Nome') ], $nome,      true);
-        $this->form->addRowField([ new TLabel('Ano')  ], $materia_id, true);
+            $items = [];
+            foreach ($materias as $materia) {
+                $items[$materia->id] = $materia->nome; // Key is ID, Value is Nome
+            }
+            $materia_id->addItems($items);
+
+            TTransaction::close();
+
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();
+        }
+
+        $this->form->addRowField('Nome:', $nome,       true);
+        $this->form->addRowField('Matéria:',  $materia_id, true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         // add the form to the page
         parent::add($this->form);

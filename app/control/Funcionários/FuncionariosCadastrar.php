@@ -36,10 +36,11 @@ class FuncionariosCadastrar extends TPage
         $nome = new TEntry('nome');
         $cargo = new TEntry('cargo');
 
-        $this->form->addRowField([new TLabel('Nome')],  $nome,   true);
-        $this->form->addRowField([new TLabel('Cargo')], $cargo,  true);
+        $this->form->addRowField('Nome:',            $nome,   true);
+        $this->form->addRowField('Cargo que ocupa:', $cargo,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         // add the form to the page
         parent::add($this->form);
@@ -70,7 +71,7 @@ class FuncionariosCadastrar extends TPage
             $this->form->setData($data);
 
             // cria uma string com os valores dos elementos do formulário
-            $message  = 'Você cadastrou o(a) Aluno(a):  <br>';
+            $message  = 'Você cadastrou o(a) Funcionário(a):  <br>';
             $message .= 'Nome: '    . $data->nome .    '<br>';
             $message .= 'Cargo: '   . $data->cargo .   '<br>';
 
@@ -79,7 +80,7 @@ class FuncionariosCadastrar extends TPage
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Funcionário(a) cadastrado(a) com sucesso!', 'top right', 'fa:circle-check');
+            TToast::show('success', 'Funcionário(a) cadastrado(a) com sucesso!', 'top center', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

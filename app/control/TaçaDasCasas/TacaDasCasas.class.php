@@ -81,9 +81,9 @@ class TacaDasCasas extends TPage
         $action_group = new TDataGridActionGroup('Ações', 'fa:trophy');
         $action_group->addHeader('Visualizar Dados da Casa');
         $action_group->addAction($action1);
+        $action_group->addSeparator();
         $action_group->addHeader('A Hermione acertou mais uma pergunta?');
         $action_group->addAction($action2);
-        $action_group->addSeparator();
         $action_group->addHeader('Algum aluno está fora da cama denovo?');
         $action_group->addAction($action3);
         $this->datagrid->addActionGroup($action_group);

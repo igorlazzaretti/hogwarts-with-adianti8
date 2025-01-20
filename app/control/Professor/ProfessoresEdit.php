@@ -1,6 +1,7 @@
 <?php
 
 use Adianti\Control\TAction;
+use Adianti\Control\TPage;
 use Adianti\Control\TWindow;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TTransaction;
@@ -9,42 +10,57 @@ use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Form\TModalForm;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class ProfessoresEdit extends TWindow
+class ProfessoresEdit extends TPage
 {
     private $form;
 
     public function __construct()
     {
         parent::__construct();
-        parent::setSize(0.6, 0.5); // Define o tamanho da janela (60% da largura e 50% da altura)
-        parent::setTitle('Editar Matéria'); // Define o título da janela
 
-        $this->form = new BootstrapFormBuilder('form_materia');
+        $this->form = new TModalForm('form_edit');
+        $this->form->setFormTitle('Editar Professor');
 
         $id = new TEntry('id');
+        $id->setEditable(false);
+        $id->placeholder = 'ID';
+
+
         $nome = new TEntry('nome');
-        $ano = new TCombo('ano');
+        $nome->placeholder = 'Nome';
+        $nome->autofocus = 'autofocus';
 
-        $id->setEditable(false);
 
-        // Adiciona opções para o campo 'ano'
-        $ano->addItems([
-            1 => '1º Ano',
-            2 => '2º Ano',
-            3 => '3º Ano',
-            4 => '4º Ano',
-        ]);
 
-        $ano->setValue('1');
-        $id->setEditable(false);
+        $materia = new TCombo('materia_id');
+        $materia->placeholder = 'Matéria';
 
-        $this->form->addFields([new TLabel('ID')], [$id]);
-        $this->form->addFields([new TLabel('Nome')], [$nome]);
-        $this->form->addFields([new TLabel('Ano')], [$ano]);
+        try {
+            TTransaction::open('hogwartsdb');
+            $materias = Materia::getObjects(); // Retrieves all Materia records
+
+            $items = [];
+            foreach ($materias as $m) {
+                $items[$m->id] = $m->nome; // Key is ID, Value is Nome
+            }
+            $materia->addItems($items);
+
+            TTransaction::close();
+
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();
+        }
+
+        $this->form->addRowField('ID do Professor:',  $id,      true);
+        $this->form->addRowField('Nome:',             $nome,    true);
+        $this->form->addRowField('Matéria:',          $materia, true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
     }
@@ -61,10 +77,10 @@ class ProfessoresEdit extends TWindow
 
                 TTransaction::open('hogwartsdb'); // abre uma transação com o banco de dados
 
-                $materia = new Materia($id); // carrega o aluno do banco de dados
+                $professor = new Professor($id); // carrega o aluno do banco de dados
 
-                if ($materia) {
-                    $this->form->setData($materia); // preenche o formulário com os dados do aluno
+                if ($professor) {
+                    $this->form->setData($professor); // preenche o formulário com os dados do aluno
                 }
 
                 TTransaction::close(); // fecha a transação
@@ -84,14 +100,14 @@ class ProfessoresEdit extends TWindow
 
             $data = $this->form->getData(); // obtém os dados do formulário
 
-            $materia = new Materia;
-            $materia->fromArray((array) $data);
-            $materia->store(); // armazena o aluno no banco de dados
+            $professor = new Professor;
+            $professor->fromArray((array) $data);
+            $professor->store(); // armazena o aluno no banco de dados
 
             TTransaction::close(); // fecha a transação
 
-            new TMessage('info', 'Matéria atualizada com sucesso!', new TAction([$this, 'onSuccess']));
-            TToast::show('success', 'Aluno salvo com sucesso!', 'bottom right', 'fa:circle-check');
+            new TMessage('info', 'Professor atualizado(a) com sucesso!', new TAction([$this, 'onSuccess']));
+            TToast::show('success', 'Professor atualizado(a) com sucesso', 'bottom right', 'fa:circle-check');
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
@@ -100,7 +116,7 @@ class ProfessoresEdit extends TWindow
     }
     public function onSuccess()
     {
-        AdiantiCoreApplication::gotoPage('Materias', 'onReload');
+        AdiantiCoreApplication::gotoPage('Professores', 'onReload');
     }
 
 }

@@ -57,6 +57,11 @@
             <action>JoinManual</action>
             </menuitem>
 
+            <menuitem label='Join SQL Manual'>
+            <icon>fa:cog fa-fw</icon>
+            <action>JoinSQLManual</action>
+            </menuitem>
+
             <menuitem label="Agradecimentos">
                 <icon>fa:chess-rook fa-fw</icon>
                 <action>SaibaMais</action>

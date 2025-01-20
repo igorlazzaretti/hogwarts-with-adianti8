@@ -32,12 +32,13 @@ class Materias extends TPage
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
 
         // create the datagrid columns
-        $id     = new TDataGridColumn ( 'id',    'Nro',         'left',  '0%');
-        $name   = new TDataGridColumn ( 'name',  'Matéria',     'left',  '60%');
+        $id     = new TDataGridColumn ( '',      '',            'left',  '10%');
+        $name   = new TDataGridColumn ( 'name',  'Matéria',     'left',  '50%');
         $year   = new TDataGridColumn ( 'year',  'Ano Escolar', 'left',  '40%');
 
 
         // add the columns to the datagrid, with actions on column titles, passing parameters
+        $this->datagrid->addColumn($id);
         $this->datagrid->addColumn($name);
         $this->datagrid->addColumn($year);
 
