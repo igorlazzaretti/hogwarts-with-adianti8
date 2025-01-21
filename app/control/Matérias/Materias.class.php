@@ -50,7 +50,8 @@ class Materias extends TPage
         ]);
         $action2 = new TDataGridAction([$this, 'onSubject'],[
             'nome' => '{name}',
-            'ano'  => '{year}'
+            'ano'  => '{year}',
+            'assunto'  => '{assunto}'
         ]);
         $action3 = new TDataGridAction([$this, 'onDelete'],[
             'id'    => '{id}',
@@ -83,7 +84,7 @@ class Materias extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, ano FROM materia ORDER BY id');
+                id, nome, ano, assunto FROM materia ORDER BY id');
 
             foreach ($result as $row)
             {
@@ -91,6 +92,8 @@ class Materias extends TPage
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
                 $item->year = $row['ano'];
+                $item->assunto = $row['assunto'];
+
                 $this->datagrid->addItem($item);
             }
 
@@ -119,10 +122,10 @@ class Materias extends TPage
         $vbox->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $vbox->add($panel);
 
-                // Registra o botão no formulário
-                $this->form = new TForm('form_materias');
-                $this->form->setFields([$button]);
-                $vbox->add($this->form);
+        // Registra o botão no formulário
+        $this->form = new TForm('form_materias');
+        $this->form->setFields([$button]);
+        $vbox->add($this->form);
 
         parent::add($vbox);
     }
@@ -153,10 +156,11 @@ class Materias extends TPage
      */
     public static function onSubject($param)
     {
-        new TMessage('info',   'Estes são os contúdos desta matéria: <br>
-                                Desvendar a borra de café do fundo da xícara, <br>
-                                Uso do viratempo para assistir muitas aulas, <br>
-                                Desaparatar dentro de Hogwarts, com Dumbledore (mistério).');
+        $name    = $param['nome'];
+        $assunto = $param['assunto'];
+
+        new TMessage('info', "Assunto da Disciplina" . $name . ": <br> <b>"
+            . $assunto . "</b>");
     }
 
     public static function onDelete($param)
@@ -226,7 +230,7 @@ class Materias extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, ano FROM materia ORDER BY id');
+                id, nome, ano, assunto FROM materia ORDER BY id');
 
             foreach ($result as $row)
             {
@@ -234,6 +238,8 @@ class Materias extends TPage
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
                 $item->year = $row['ano'];
+                $item->assunto = $row['assunto'];
+
                 $this->datagrid->addItem($item);
             }
 
