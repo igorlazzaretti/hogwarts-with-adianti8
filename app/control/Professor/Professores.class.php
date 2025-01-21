@@ -32,8 +32,8 @@ class Professores extends TPage
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
 
         // create the datagrid columns
-        $id   = new TDataGridColumn    ( 'id',      'Nro',                 'left',  '0%');
-        $name = new TDataGridColumn    ( 'name',    'Nome do Professor',   'left',  '40%');
+        $id      = new TDataGridColumn ( 'id',      'Nro',                 'left',  '0%');
+        $name    = new TDataGridColumn ( 'name',    'Nome do Professor',   'left',  '40%');
         $materia = new TDataGridColumn ( 'materia', 'Matéria que Leciona', 'left',  '60%');
 
         // add the columns to the datagrid, with actions on column titles, passing parameters
@@ -44,21 +44,25 @@ class Professores extends TPage
         $action1 = new TDataGridAction([$this, 'onView'],[
             'id'         => '{id}',
             'nome'       => '{name}',
-            'materia_id' => '{materia}'
+            'materia_id' => '{materia}',
+            'curiosidade' => '{curiosidade}'
         ]);
         $action2 = new TDataGridAction([$this, 'onSubject'],[
             'nome'       => '{name}',
-            'materia_id' => '{materia}'
+            'materia_id' => '{materia}',
+            'curiosidade' => '{curiosidade}'
         ]);
         $action3 = new TDataGridAction([$this, 'onDelete'],[
             'id'         => '{id}',
             'nome'       => '{name}',
-            'materia_id' => '{materia}'
+            'materia_id' => '{materia}',
+            'curiosidade' => '{curiosidade}'
         ]);
         $action4 = new TDataGridAction([$this, 'onEdit'],[
-            'id'         => '{id}',
-            'nome'       => '{name}',
-            'materia_id' => '{materia}'
+            'id'          => '{id}',
+            'nome'        => '{name}',
+            'materia_id'  => '{materia}',
+            'curiosidade' => '{curiosidade}'
         ]);
 
         // custom button presentation
@@ -106,22 +110,15 @@ class Professores extends TPage
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
                 $item->materia = $row['materia_nome'];
+                $item->curiosidade = $row['curiosidade'];
                 $this->datagrid->addItem($item);
             }
-
-
-
-
-
-
-
 
             TTransaction::close();
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
-
 
         // Cria o botão de cadastrar matéria
         $button = new TButton('cadastrar_materia');
@@ -151,7 +148,7 @@ class Professores extends TPage
     }
 
     /**
-     *  Método onView()
+     *  Método onCreateProfessor()
      *  Cadastra um novo professor
      */
     public function onCreateProfessor($param)
@@ -175,14 +172,16 @@ class Professores extends TPage
 
     /**
      *  Método onSubject()
-     *  Mostra o assunto ensinado nesta matéria
+     *  Mostra a Curiosidade do Professor
      */
     public static function onSubject($param)
     {
-        new TMessage('info',    'Estes são os contúdos desta matéria: <br>
-                            Desvendar a borra de café do fundo da xícara, <br>
-                            Uso do viratempo para assistir muitas aulas, <br>
-                            Desaparatar dentro de Hogwarts, com Dumbledore (mistério).' );
+
+        $name = $param['name'];
+        $curiosidade = $param['curiosidade'];
+
+        new TMessage('info', "Curiosidade sobre o(a) Professor(a)" . $name . ": <br> <b>"
+            . $curiosidade . "</b>");
     }
 
     public static function onDelete($param)
@@ -261,6 +260,7 @@ class Professores extends TPage
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
                 $item->materia = $row['materia_nome'];
+                $item->curiosidade = $row['curiosidade'];
                 $this->datagrid->addItem($item);
             }
 

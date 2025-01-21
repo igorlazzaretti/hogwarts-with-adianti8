@@ -13,12 +13,26 @@ CREATE TABLE Materia (
     nome TEXT NOT NULL,
     ano INTEGER NOT NULL
 );
+-- Inserção de dados de exemplo na tabela Materia
+INSERT INTO Materia (nome, ano) VALUES
+('Transfiguração',                    1),
+('Poções',                            1),
+('Feitiços',                          1),
+('Herbologia',                        1),
+('História da Magia',                 1),
+('Astronomia',                        2),
+('Runas Antigas',                     3),
+('Defesa Contra as Artes das Trevas', 3),
+('Trato das Criaturas Mágicas',       3),
+('Adivinhação',                       4),
+('Feitiços Avançados',                4);
 
 -- Criação da tabela Professor
 CREATE TABLE Professor (
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
-    materia_id INTEGER REFERENCES Materia(id)
+    materia_id INTEGER REFERENCES Materia(id),
+    curiosidade TEXT
 );
 
 -- Criação da tabela Funcionario
@@ -51,29 +65,34 @@ INSERT INTO Aluno (nome, idade, casa, ano) VALUES
 ('Cedrico Diggory', 14, 'Lufa-Lufa', 4);
 
 -- Inserção de dados de exemplo na tabela Professor
-INSERT INTO Professor (nome, materia_id) VALUES
-('Minerva McGonagall', 1),  -- Transfiguração (1º ano)
-('Severo Snape', 2),        -- Poções (1º ano)
-('Filius Flitwick', 3),     -- Feitiços (1º ano)
-('Pomona Sprout', 4),      -- Herbologia (1º ano)
-('Remo Lupin', 8);         -- Defesa Contra as Artes das Trevas (3º ano)
+INSERT INTO Professor (nome, materia_id, curiosidade) VALUES
+('Minerva McGonagall', 1, 'Ela é uma animaga, capaz de se transformar em um gato malhado.'), -- Transfiguração (1º ano)
+('Severo Snape',       2, 'Ele inventou vários feitiços, incluindo o Sectumsempra (que corta o oponente) e o Levicorpus (que suspende a pessoa no ar pelos tornozelos).'), -- Poções (1º ano)
+('Filius Flitwick',    3, 'Flitwick é um mestre em feitiços e encanta o Salão Principal com decorações mágicas incríveis para o Natal.'), -- Feitiços (1º ano)
+('Pomona Sprout',      4, 'Ela cultivou as mandrágoras que foram usadas para reviver as vítimas petrificadas pelo Basilisco em "Harry Potter e a Câmara Secreta".'), -- Herbologia (1º ano)
+('Remo Lupin',         8, 'Ele ajudou a criar o Mapa do Maroto junto com seus amigos James Potter, Sirius Black e Pedro Pettigrew.'); -- Defesa Contra as Artes das Trevas (3º ano)
 
 -- Inserção de dados de exemplo na tabela Materia
 INSERT INTO Materia (nome, ano) VALUES
-('Transfiguração', 1),
-('Poções', 1),
-('Feitiços', 1),
-('Herbologia', 1),
-('História da Magia', 1),
-('Astronomia', 2),
-('Runas Antigas', 3),
+('Transfiguração',                    1),
+('Poções',                            1),
+('Feitiços',                          1),
+('Herbologia',                        1),
+('História da Magia',                 1),
+('Astronomia',                        2),
+('Runas Antigas',                     3),
 ('Defesa Contra as Artes das Trevas', 3),
-('Trato das Criaturas Mágicas', 3),
-('Adivinhação', 4),
-('Feitiços Avançados', 4);
+('Trato das Criaturas Mágicas',       3),
+('Adivinhação',                       4),
+('Feitiços Avançados',                4);
 
 -- Inserção de dados de exemplo na tabela Professor
 INSERT INTO Funcionario (nome, cargo) VALUES
-('Alvo Dumbledore', 'Diretor de Hogwarts'),
-('Minerva McGonagall', 'Diretora-adjunta'),
-('Rubeus Hagrid', 'Guarda-caça e Guardião das Chaves e Terrenos de Hogwarts');
+('Alvo Dumbledore',     'Diretor de Hogwarts'),
+('Minerva McGonagall',  'Diretora-adjunta'),
+('Rubeus Hagrid',       'Guarda-caça e Guardião das Chaves e Terrenos de Hogwarts'),
+('Argo Filch',          'Zelador de Hogwarts'),
+('Percy Weasley',       'Monitor-chefe da Grifinória'),
+('Penélope Clearwater', 'Monitora-chefe da Corvinal'),
+('Ernie Macmillan',     'Monitor-chefe da Lufa-Lufa'),
+('Draco Malfoy',        'Monitor-chefe da Sonserina');

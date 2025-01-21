@@ -1,0 +1,38 @@
+:root {
+    --ad-menu-item-color: #a14f3b;
+    --color-hog-1:#a14f3b;
+    --color-hog-2:#a1813b;
+    --color-hog-3:#f0e2c5;
+    --color-hog-4:#411c16;
+    --color-hog-5:#8130236c;
+
+}
+.form-check-input {
+    background-color: #f0e2c5;
+    border-color: #a1813b;
+    box-shadow: none;
+    &:checked {
+        background-color: #a1813b;
+        border-color: #a1813b;
+        box-shadow: none;
+
+    }
+    &:focus {
+        box-shadow: none;
+        border-color: #a1813b;
+        }
+    &:hover {
+        /* background-color: #a1813b; */
+        border-color: #411c16;
+    }
+}
+#sidebar-toggle {
+    background-color: #ceae6d3b;
+    /* border-color: #a1813b; */
+    color: #a1813b;
+    &:hover {
+        background-color: var(--color-hog-5);
+        border: none;
+        color: #f0e2c5;
+    }
+}

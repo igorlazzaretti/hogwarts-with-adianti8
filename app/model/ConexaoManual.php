@@ -30,13 +30,14 @@ class ConexaoManual extends TPage
 
             print_r('<br> ');
 
-            $result = $conn->query('SELECT id, nome FROM professor ORDER BY id');
+            $result = $conn->query('SELECT id, nome, curiosidade FROM professor ORDER BY id');
 
             foreach ($result as $row)
             {
                 print_r('Professor(a): ' .
-                        $row['id'] . '- Nome: ' .
-                        $row['nome'] .  ';<br>');
+                        $row['id'] . '- Nome: '  .
+                        $row['nome'] .  ';<br>' .
+                        $row['curiosidade'] .  ';<br>');
             }
 
             print_r('<br> ');

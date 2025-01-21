@@ -11,6 +11,7 @@ use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 
 class ProfessoresCadastrar extends TPage
 {
@@ -21,11 +22,11 @@ class ProfessoresCadastrar extends TPage
         parent::__construct();
 
         // creates the form
-        $this->form = new TModalForm('form_login');
+        $this->form = new TModalForm('form_cadastrar_professor');
         $this->form->setFormTitle('Cadastrar Professor');
 
         // Adicione os campos do formulário aqui
-        $nome = new TEntry('nome');
+        $nome =       new TEntry('nome');
         $materia_id = new TCombo('materia_id');
         try {
             TTransaction::open('hogwartsdb');
@@ -43,11 +44,13 @@ class ProfessoresCadastrar extends TPage
             new TMessage('error', $e->getMessage());
             TTransaction::rollback();
         }
+        $curiosidade = new TText('curiosidade');
 
-        $this->form->addRowField('Nome:', $nome,       true);
-        $this->form->addRowField('Matéria:',  $materia_id, true);
+        $this->form->addRowField('Nome:',        $nome,        true);
+        $this->form->addRowField('Matéria:',     $materia_id,  true);
+        $this->form->addRowField('Curiosidade:', $curiosidade, true);
 
-        $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addAction(      'Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         // add the form to the page
@@ -64,9 +67,9 @@ class ProfessoresCadastrar extends TPage
 
             $data = $this->form->getData(); // obtém os dados do formulário
 
-            $materia_id = new Professor;
-            $materia_id->fromArray((array) $data);
-            $materia_id->store(); // armazena o objeto no banco de dados
+            $update = new Professor;
+            $update->fromArray((array) $data);
+            $update->store(); // armazena o objeto no banco de dados
 
             TTransaction::close(); // fecha a transação
 
@@ -74,15 +77,17 @@ class ProfessoresCadastrar extends TPage
             $this->form->setData($data);
 
             // cria uma string com os valores dos elementos do formulário
-            $message  = 'Você cadastrou o(a) Professor(a):  <br>';
+            $message  = 'Você Cadastrou dados o(a) Professor(a):  <br>';
             $message .= 'Nome: '    . $data->nome .  '<br>';
             $message .= 'Responsável pela Matéria: '   . $data->materia_id .   '<br>';
+            $message .= 'Curiosidade: '   . $data->curiosidade .   '<br>';
+
 
             // exibe a mensagem
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Professor(a) cadastrado(a) com sucesso!', 'top right', 'fa:circle-check');
+            TToast::show('success', 'Professor(a) Cadastrado(a) com Sucesso!', 'top center', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

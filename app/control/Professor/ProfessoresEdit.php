@@ -30,14 +30,9 @@ class ProfessoresEdit extends TPage
 
 
         $nome = new TEntry('nome');
-        $nome->placeholder = 'Nome';
         $nome->autofocus = 'autofocus';
 
-
-
         $materia = new TCombo('materia_id');
-        $materia->placeholder = 'Matéria';
-
         try {
             TTransaction::open('hogwartsdb');
             $materias = Materia::getObjects(); // Retrieves all Materia records
@@ -55,11 +50,14 @@ class ProfessoresEdit extends TPage
             TTransaction::rollback();
         }
 
-        $this->form->addRowField('ID do Professor:',  $id,      true);
-        $this->form->addRowField('Nome:',             $nome,    true);
-        $this->form->addRowField('Matéria:',          $materia, true);
+        $curiosidade = new TEntry('curiosidade');
 
-        $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addRowField('ID do Professor:', $id,      true);
+        $this->form->addRowField('Nome:',            $nome,    true);
+        $this->form->addRowField('Matéria:',         $materia, true);
+        $this->form->addRowField('Curiosidade:',     $curiosidade, true);
+
+        $this->form->addAction(      'Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
@@ -107,7 +105,7 @@ class ProfessoresEdit extends TPage
             TTransaction::close(); // fecha a transação
 
             new TMessage('info', 'Professor atualizado(a) com sucesso!', new TAction([$this, 'onSuccess']));
-            TToast::show('success', 'Professor atualizado(a) com sucesso', 'bottom right', 'fa:circle-check');
+            TToast::show('success', 'Professor atualizado(a) com sucesso', 'topt center', 'fa:circle-check');
 
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
