@@ -4,7 +4,10 @@ use Adianti\Control\TAction;
 use Adianti\Control\TPage;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Core\AdiantiCoreTranslator;
+use Adianti\Database\TCriteria;
 use Adianti\Database\TDatabase;
+use Adianti\Database\TFilter;
+use Adianti\Database\TRepository;
 use Adianti\Database\TTransaction;
 use Adianti\Widget\Container\THBox;
 use Adianti\Widget\Container\TPanelGroup;
@@ -16,6 +19,7 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TButton;
+use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
@@ -32,9 +36,9 @@ class Materias extends TPage
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
 
         // create the datagrid columns
-        $id     = new TDataGridColumn ( '',      '',            'left',  '10%');
-        $name   = new TDataGridColumn ( 'name',  'Matéria',     'left',  '50%');
-        $year   = new TDataGridColumn ( 'year',  'Ano Escolar', 'left',  '40%');
+        $id     = new TDataGridColumn('',      '',            'left',  '2%');
+        $name   = new TDataGridColumn('name',  'Matéria',     'left',  '58%');
+        $year   = new TDataGridColumn('year',  'Ano Escolar', 'left',  '40%');
 
 
         // add the columns to the datagrid, with actions on column titles, passing parameters
@@ -43,21 +47,25 @@ class Materias extends TPage
         $this->datagrid->addColumn($year);
 
         // creates two datagrid actions
-        $action1 = new TDataGridAction([$this, 'onView'],[
+        $action1 = new TDataGridAction([$this, 'onView'], [
             'id'    => '{id}',
             'nome'  => '{name}',
             'ano'   => '{year}'
         ]);
-        $action2 = new TDataGridAction([$this, 'onSubject'],[
+        $action2 = new TDataGridAction([$this, 'onSubject'], [
             'nome' => '{name}',
             'ano'  => '{year}',
             'assunto'  => '{assunto}'
         ]);
-        $action3 = new TDataGridAction([$this, 'onDelete'],[
+        $action3 = new TDataGridAction([$this, 'onDelete'], [
             'id'    => '{id}',
             'nome'  => '{name}',
         ]);
-        $action4 = new TDataGridAction([$this, 'onEdit'],[
+        $action4 = new TDataGridAction([$this, 'onEdit'], [
+            'id'    => '{id}',
+            'nome'  => '{name}',
+        ]);
+        $action5 = new TDataGridAction([$this, 'onProfessor'], [
             'id'    => '{id}',
             'nome'  => '{name}',
         ]);
@@ -67,12 +75,14 @@ class Materias extends TPage
         $action2->setUseButton(TRUE);
         $action3->setUseButton(TRUE);
         $action4->setUseButton(TRUE);
+        $action5->setUseButton(TRUE);
 
         // add the actions to the datagrid
-        $this->datagrid->addAction($action1, '',        'fa:search blue' );
-        $this->datagrid->addAction($action2, 'Assunto', 'fa:book purple' );
-        $this->datagrid->addAction($action3, '',        'fa:trash red'   );
-        $this->datagrid->addAction($action4, '',        'fa:edit green'  );
+        $this->datagrid->addAction($action1, '',         'fa:search blue');
+        $this->datagrid->addAction($action2, 'Assunto',  'fa:book purple');
+        $this->datagrid->addAction($action3, '',         'fa:trash red');
+        $this->datagrid->addAction($action4, '',         'fa:edit green');
+        $this->datagrid->addAction($action5, 'Professor', 'fa:hat-wizard orange');
 
 
         // creates the datagrid model
@@ -86,8 +96,7 @@ class Materias extends TPage
             $result = $conn->query('SELECT
                 id, nome, ano, assunto FROM materia ORDER BY id');
 
-            foreach ($result as $row)
-            {
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
@@ -98,7 +107,6 @@ class Materias extends TPage
             }
 
             TTransaction::close();
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
@@ -162,6 +170,45 @@ class Materias extends TPage
         new TMessage('info', "Assunto da Disciplina <b>" . $name . "</b>: <br> <b>"
             . $assunto . "</b>");
     }
+    /**
+     *  Método onProfessor()
+     *  Mostra o professor que leciona a matéria
+     */
+    public static function onProfessor($param)
+    {
+        try {
+            TTransaction::open('hogwartsdb'); // abre uma transação com o banco de dados
+
+            // Obtém o ID da matéria a partir dos parâmetros
+            $materia_id = $param['id'];
+
+            var_dump($materia_id); // OK pega o ID da Matéria
+
+            $conn = TTransaction::get(); // obtém a conexão ativa
+
+            $stmt = $conn->prepare('SELECT nome FROM Professor WHERE materia_id = :materia_id');
+            $stmt->execute([':materia_id' => $materia_id]);
+
+            $professores = $stmt->fetchAll();
+
+            if ($professores) {
+                $nomes_professores = '';
+                foreach ($professores as $professor) {
+                    $nomes_professores .= $professor['nome'] . ', ';
+                }
+                $nomes_professores = rtrim($nomes_professores, ', '); // Remove trailing comma and space
+                new TMessage('info', 'Professor(es) encontrado(s) para a matéria: <b>'
+                    . $nomes_professores . '.</b>');
+            } else {
+                new TMessage('info', 'Nenhum professor encontrado para esta matéria.');
+            }
+
+            TTransaction::close();
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();
+        }
+    }
 
     public static function onDelete($param)
     {
@@ -179,8 +226,7 @@ class Materias extends TPage
      */
     public function Delete($param)
     {
-        try
-        {
+        try {
             // $key conterá o id da Matéria
             $key = $param['key']; // get the parameter $key
             TTransaction::open('hogwartsdb'); // open a transaction with database
@@ -230,10 +276,9 @@ class Materias extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, ano, assunto FROM materia ORDER BY id');
+                id, nome, ano, assunto FROM materia ORDER BY id ');
 
-            foreach ($result as $row)
-            {
+            foreach ($result as $row) {
                 $item = new StdClass;
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
@@ -244,10 +289,8 @@ class Materias extends TPage
             }
 
             TTransaction::close();
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
-
     }
 }
