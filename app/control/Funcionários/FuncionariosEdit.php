@@ -11,6 +11,7 @@ use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class FuncionariosEdit extends TPage
@@ -33,6 +34,7 @@ class FuncionariosEdit extends TPage
 
         $cargo = new TEntry('cargo');
 
+        $funcoes = new TText('funcoes');
 
         // // Create the form fields
         // $login = new TEntry('nome');
@@ -41,13 +43,15 @@ class FuncionariosEdit extends TPage
         // $this->form->addRowField('Digite seu Nome', $login, true);
 
 
-        $this->form->addRowField('ID do(a) Funcionário(a)', $id, true);
+        $this->form->addRowField('Identificação do(a) Funcionário(a):', $id,     true);
 
-        $this->form->addRowField('Nome do(a) Funcionário(a)', $nome, true);
+        $this->form->addRowField('Nome do(a) Funcionário(a):',          $nome,   true);
 
-        $this->form->addRowField('Cargo que ocupa',  $cargo,  true);
+        $this->form->addRowField('Cargo que ocupa:',                    $cargo,  true);
 
-        $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addRowField('Funções realizadas:',                 $funcoes,true);
+
+        $this->form->addAction(      'Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);

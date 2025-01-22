@@ -11,7 +11,7 @@ CREATE TABLE Aluno (
 CREATE TABLE Materia (
     id   SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
-    ano  INTEGER NOT NULL,ttt
+    ano  INTEGER NOT NULL,
     assunto TEXT NOT NULL
 );
 
@@ -21,14 +21,15 @@ CREATE TABLE Professor (
     id          SERIAL PRIMARY KEY,
     nome        TEXT NOT NULL,
     materia_id  INTEGER REFERENCES Materia(id),
-    curiosidade TEXT
+    curiosidade TEXT 
 );
 
 -- Criação da tabela Funcionario
 CREATE TABLE Funcionario (
-    id    SERIAL PRIMARY KEY,
-    nome  VARCHAR(255) NOT NULL,
-    cargo VARCHAR(255) NOT NULL
+    id      SERIAL PRIMARY KEY,
+    nome    VARCHAR(255) NOT NULL,
+    cargo   VARCHAR(255) NOT NULL,
+    funcoes TEXT NOT NULL
 );
 
 -- Criação da tabela TacaDasCasas
@@ -76,12 +77,12 @@ INSERT INTO Professor (nome, materia_id, curiosidade) VALUES
 ('Remo Lupin',         8, 'Ele ajudou a criar o Mapa do Maroto junto com seus amigos James Potter, Sirius Black e Pedro Pettigrew.'); -- Defesa Contra as Artes das Trevas (3º ano)
 
 -- Inserção de dados de exemplo na tabela Professor
-INSERT INTO Funcionario (nome, cargo) VALUES
-('Alvo Dumbledore',     'Diretor de Hogwarts'),
-('Minerva McGonagall',  'Diretora-adjunta'),
-('Rubeus Hagrid',       'Guarda-caça e Guardião das Chaves e Terrenos de Hogwarts'),
-('Argo Filch',          'Zelador de Hogwarts'),
-('Percy Weasley',       'Monitor-chefe da Grifinória'),
-('Penélope Clearwater', 'Monitora-chefe da Corvinal'),
-('Ernie Macmillan',     'Monitor-chefe da Lufa-Lufa'),
-('Draco Malfoy',        'Monitor-chefe da Sonserina');
+INSERT INTO Funcionario (nome, cargo, funcoes) VALUES
+('Alvo Dumbledore',    'Diretor de Hogwarts', 'Administração e orientação geral da escola'),
+('Minerva McGonagall', 'Diretora-adjunta',    'Coordenação de professores e alunos'),
+('Rubeus Hagrid',      'Guarda-caça e Guardião das Chaves e Terrenos de Hogwarts', 'Sua função é cuidar dos aniamis mágicos, das chaves e dos terrenos da escola'),
+('Argo Filch',         'Zelador de Hogwarts', 'Limpeza e manutenção da escola'),
+('Percy Weasley',      'Monitor-chefe da Grifinória', 'Fiscalização e organização dos alunos da Grifinória'),
+('Penélope Clearwater','Monitora-chefe da Corvinal',  'Fiscalização e organização dos alunos da Corvinal'),
+('Ernie Macmillan',    'Monitor-chefe da Lufa-Lufa',  'Fiscalização e organização dos alunos da Lufa-Lufa'),
+('Draco Malfoy',       'Monitor-chefe da Sonserina',  'Fiscalização e organização dos alunos da Sonserina');

@@ -13,6 +13,7 @@ use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
 use Adianti\Widget\Form\TPassword;
+use Adianti\Widget\Form\TText;
 use Adianti\Widget\Util\TDropDown;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapFormBuilder;
@@ -33,11 +34,13 @@ class FuncionariosCadastrar extends TPage
         $this->form->setFormTitle('Cadastrar Funcionário(a)');
 
         // Adicione os campos do formulário aqui
-        $nome = new TEntry('nome');
-        $cargo = new TEntry('cargo');
+        $nome   = new TEntry('nome');
+        $cargo  = new TEntry('cargo');
+        $funcoes = new TText('funcoes');
 
-        $this->form->addRowField('Nome:',            $nome,   true);
-        $this->form->addRowField('Cargo que ocupa:', $cargo,  true);
+        $this->form->addRowField('Nome:',            $nome,    true);
+        $this->form->addRowField('Cargo que ocupa:', $cargo,   true);
+        $this->form->addRowField('Funções:',         $funcoes,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
@@ -55,9 +58,8 @@ class FuncionariosCadastrar extends TPage
 
             $data = $this->form->getData(); // obtém os dados do formulário
 
-
             // Verifica se todos os campos obrigatórios estão preenchidos
-            if (empty($data->nome) || empty($data->cargo) ) {
+            if (empty($data->nome) || empty($data->cargo) || empty($data->funcoes)) {
                 throw new Exception('Os campos nome e cargo são obrigatórios.');
             }
 
@@ -74,6 +76,7 @@ class FuncionariosCadastrar extends TPage
             $message  = 'Você cadastrou o(a) Funcionário(a):  <br>';
             $message .= 'Nome: '    . $data->nome .    '<br>';
             $message .= 'Cargo: '   . $data->cargo .   '<br>';
+            $message .= 'Funções: ' . $data->funcoes .  '<br>';
 
 
             // exibe a mensagem
