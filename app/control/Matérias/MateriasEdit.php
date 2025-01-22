@@ -11,6 +11,7 @@ use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class MateriasEdit extends TWindow
@@ -34,6 +35,7 @@ class MateriasEdit extends TWindow
         $id = new TEntry('id');
         $nome = new TEntry('nome');
         $ano = new TCombo('ano');
+        $assunto = new TText('assunto');
 
         $id->setEditable(false);
 
@@ -48,9 +50,10 @@ class MateriasEdit extends TWindow
         $ano->setValue('1');
         $id->setEditable(false);
 
-        $this->form->addRowField('ID',   $id,   true);
+        $this->form->addRowField('Número de Identificação',   $id,   true);
         $this->form->addRowField('Nome', $nome, true);
         $this->form->addRowField('Ano',  $ano,  true);
+        $this->form->addRowField('Assunto',  $assunto,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');

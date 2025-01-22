@@ -12,6 +12,7 @@ use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class MateriasCadastrar extends TPage
@@ -30,6 +31,7 @@ class MateriasCadastrar extends TPage
 
         // Adicione os campos do formulário aqui
         $nome = new TEntry('nome');
+
         $ano = new TCombo('ano');
         $ano->addItems([
             '1' => '1º Ano',
@@ -39,8 +41,11 @@ class MateriasCadastrar extends TPage
         ]);
         $ano->setValue('1');
 
-        $this->form->addRowField('Nome', $nome, true);
-        $this->form->addRowField('Ano', $ano, true);
+        $assunto = new TText('assunto');
+
+        $this->form->addRowField('Nome:', $nome, true);
+        $this->form->addRowField('Ano:', $ano, true);
+        $this->form->addRowField('Assunto:', $assunto, true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
@@ -71,12 +76,13 @@ class MateriasCadastrar extends TPage
             $message  = 'Você cadastrou a matéria:  <br>';
             $message .= 'Nome: '  . $data->nome .  '<br>';
             $message .= 'Ano: '   . $data->ano .   '<br>';
+            $message .= 'Assunto: ' . $data->assunto . '<br>';
 
             // exibe a mensagem
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Matéria cadastrada com sucesso!', 'bottom right', 'fa:circle-check');
+            TToast::show('success', 'Matéria cadastrada com sucesso!', 'top center', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro

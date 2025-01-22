@@ -159,7 +159,7 @@ class Materias extends TPage
         $name    = $param['nome'];
         $assunto = $param['assunto'];
 
-        new TMessage('info', "Assunto da Disciplina" . $name . ": <br> <b>"
+        new TMessage('info', "Assunto da Disciplina <b>" . $name . "</b>: <br> <b>"
             . $assunto . "</b>");
     }
 
