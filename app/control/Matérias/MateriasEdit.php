@@ -52,7 +52,7 @@ class MateriasEdit extends TWindow
         ]);
 
         $ano->setValue('1');
-
+        // Adiciona opções para o campo 'professor'
         try {
             TTransaction::open('hogwartsdb');
             $professores = Professor::getObjects(); // Retrieves all Materia records
@@ -70,19 +70,19 @@ class MateriasEdit extends TWindow
             TTransaction::rollback();
         }
 
-        $this->form->addRowField('Número de Identificação', $id,        true);
+               $this->form->addRowField('Número de Identificação', $id,        true);
         $this->form->addRowField('Nome',                    $nome,      true);
         $this->form->addRowField('Ano',                     $ano,       true);
         $this->form->addRowField('Assunto',                 $assunto,   true);
-        $this->form->addRowField('Professor Atual:',        $professor_atual, true);
-        $this->form->addRowField('Professor',               $professor,       true);
+        $this->form->addRowField('Professor(es) Atual(is):',$professor_atual, true);
+        $this->form->addRowField('Adicionar Professor:',    $professor,       true);
 
         $this->form->addAction(      'Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
     }
-
+    
     /**
      *  Método onEdit()
      *  É o método principal
@@ -156,8 +156,14 @@ class MateriasEdit extends TWindow
             $conn = TTransaction::get();
             // ID do Professor
             $data_professor = $data->professor;
+
             // ID da Matéria
             $data_materia = $data->id;
+
+            // Limpa todos os professores da matéria
+            $clear = $conn->prepare('UPDATE Professor SET materia_id = NULL WHERE materia_id = :materia_id');
+            $clear-> execute([':materia_id' => $data_materia]);
+
             // Atualiza o ID da Matéria na tabela Professor
             $stmt = $conn->prepare('UPDATE Professor SET materia_id = :materia_id WHERE id = :professor_id');
             $stmt->execute([':materia_id' => $data_materia, ':professor_id' => $data_professor]);

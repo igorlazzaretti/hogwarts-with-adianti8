@@ -11,6 +11,7 @@ use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class ProfessoresEdit extends TPage
@@ -32,32 +33,17 @@ class ProfessoresEdit extends TPage
         $nome = new TEntry('nome');
         $nome->autofocus = 'autofocus';
 
-        $materia = new TCombo('materia_id');
-        try {
-            TTransaction::open('hogwartsdb');
-            $materias = Materia::getObjects(); // Retrieves all Materia records
+        $materia = new TEntry('materia_id');
+        $materia->setEditable(false);
 
-            $items = [];
-            foreach ($materias as $m) {
-                $items[$m->id] = $m->nome; // Key is ID, Value is Nome
-            }
-            $materia->addItems($items);
-
-            TTransaction::close();
-
-        } catch (Exception $e) {
-            new TMessage('error', $e->getMessage());
-            TTransaction::rollback();
-        }
-
-        $curiosidade = new TEntry('curiosidade');
+        $curiosidade = new TText('curiosidade');
 
         $this->form->addRowField('ID do Professor:', $id,      true);
         $this->form->addRowField('Nome:',            $nome,    true);
         $this->form->addRowField('Matéria:',         $materia, true);
         $this->form->addRowField('Curiosidade:',     $curiosidade, true);
 
-        $this->form->addAction(      'Salvar', new TAction([$this, 'onSave']),    'fa:save');
+        $this->form->addAction('Salvar', new TAction([$this, 'onSave']),    'fa:save');
         $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         parent::add($this->form);
@@ -80,6 +66,19 @@ class ProfessoresEdit extends TPage
                 if ($professor) {
                     $this->form->setData($professor); // preenche o formulário com os dados do aluno
                 }
+
+                // Matéria vinculada
+
+                $conn = TTransaction::get(); // obtém a conexão ativa
+
+                $stmt = $conn->prepare('SELECT nome FROM Materia WHERE id = :prof_id');
+                $stmt->execute([':prof_id' => $param['id']]);
+                $materia = $stmt->fetch();
+                // setValue em $materia
+                $materia_id = $this->form->getField('materia_id');
+                $materia_id->setValue($materia['nome']);
+
+
 
                 TTransaction::close(); // fecha a transação
             }
@@ -106,7 +105,6 @@ class ProfessoresEdit extends TPage
 
             new TMessage('info', 'Professor atualizado(a) com sucesso!', new TAction([$this, 'onSuccess']));
             TToast::show('success', 'Professor atualizado(a) com sucesso', 'topt center', 'fa:circle-check');
-
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro
@@ -116,5 +114,4 @@ class ProfessoresEdit extends TPage
     {
         AdiantiCoreApplication::gotoPage('Professores', 'onReload');
     }
-
 }

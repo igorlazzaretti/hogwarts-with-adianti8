@@ -80,10 +80,26 @@ class Materias extends TPage
         // add the actions to the datagrid
         $this->datagrid->addAction($action1, '',         'fa:search blue');
         $this->datagrid->addAction($action2, 'Assunto',  'fa:book purple');
-        $this->datagrid->addAction($action3, '',         'fa:trash red');
         $this->datagrid->addAction($action4, '',         'fa:edit green');
         $this->datagrid->addAction($action5, 'Professor', 'fa:hat-wizard orange');
 
+        // Grupo de Ações
+        $action1 = new TDataGridAction([$this, 'onDelete']);
+        $action1->setField('id'); // Define the field for the action
+        $action2 = new TDataGridAction([$this, 'onDeleteProfessor']);
+        $action2->setField('id'); // Define the field for the action
+        $action1->setLabel('Matéria');
+        $action1->setImage('fa:trash red');
+        $action2->setLabel('Professor');
+        $action2->setImage('fa:trash red');
+        $action_group = new TDataGridActionGroup('Excluir', 'fa:trash red');
+        $action_group->addHeader('Excluir a Matéria');
+        $action_group->addAction($action1);
+        $action_group->addSeparator();
+        $action_group->addHeader('Excluir todos os Professores da Matéria');
+        $action_group->addAction($action2);
+        $this->datagrid->addActionGroup($action_group);
+        $this->datagrid->createModel();
 
         // creates the datagrid model
         $this->datagrid->createModel();
@@ -245,6 +261,54 @@ class Materias extends TPage
         {
             new TMessage('error', $e->getMessage()); // shows the exception error message
             TTransaction::rollback(); // undo all pending operations
+        }
+    }
+    public static function onDeleteProfessor($param)
+    {
+        // define the delete action
+        $action = new TAction(array(__CLASS__, 'DeleteProfessor'));
+        $action->setParameters($param); // pass the key parameter ahead
+
+        // shows a dialog to the user
+        new TQuestion(('Quer mesmo deletar ' . $param . '?'), $action);
+    }
+
+    /**
+     * Delete a record
+     */
+    public function DeleteProfessor($param)
+    {
+        try {
+            TTransaction::open('hogwartsdb'); // abre uma transação com o banco de dados
+
+            $this->form->validate(); // valida os dados do formulário
+
+            $data = $param; // obtém os dados do formulário
+            var_dump($data); // OK pega os dados do formulário
+
+            $materia = new Materia;
+            $materia->fromArray((array) $data);
+            $materia->store(); // armazena o aluno no banco de dados
+
+            var_dump($data); // OK pega os dados do formulário
+            $conn = TTransaction::get();
+            // ID do Professor
+            $data_professor = $data->professor;
+            // ID da Matéria
+            $data_materia = $data->id;
+
+            // Limpa todos os professores da matéria
+            $clear = $conn->prepare('UPDATE Professor SET materia_id = NULL WHERE materia_id = :materia_id');
+            $clear-> execute([':materia_id' => $data_materia]);
+
+            TTransaction::close(); // fecha a transação
+
+            new TMessage('info', 'Professores excluídos com sucesso!', new TAction([$this, 'onSuccess']));
+            TToast::show('warning', 'Professores excluídos com sucesso!', 'top center', 'fa:circle-check');
+
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback(); // desfaz a transação em caso de erro
         }
     }
 
