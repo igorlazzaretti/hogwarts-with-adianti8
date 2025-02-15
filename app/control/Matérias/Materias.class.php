@@ -3,23 +3,18 @@
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
 use Adianti\Core\AdiantiCoreApplication;
-use Adianti\Core\AdiantiCoreTranslator;
-use Adianti\Database\TCriteria;
-use Adianti\Database\TDatabase;
-use Adianti\Database\TFilter;
-use Adianti\Database\TRepository;
 use Adianti\Database\TTransaction;
 use Adianti\Widget\Container\THBox;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
 use Adianti\Widget\Datagrid\TDataGridAction;
+use Adianti\Widget\Datagrid\TDataGridActionGroup;
 use Adianti\Widget\Datagrid\TDataGridColumn;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TQuestion;
 use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TButton;
-use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TForm;
 use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
@@ -108,6 +103,8 @@ class Materias extends TPage
         try {
             TTransaction::open('hogwartsdb');
             $conn = TTransaction::get();
+            
+            $this->datagrid->clear();
 
             $result = $conn->query('SELECT
                 id, nome, ano, assunto FROM materia ORDER BY id');
@@ -197,8 +194,6 @@ class Materias extends TPage
 
             // Obtém o ID da matéria a partir dos parâmetros
             $materia_id = $param['id'];
-
-            var_dump($materia_id); // OK pega o ID da Matéria
 
             $conn = TTransaction::get(); // obtém a conexão ativa
 
@@ -331,7 +326,7 @@ class Materias extends TPage
     public function onReload($param = null)
     {
 
-        // creates the datagrid model
+        // Clear the datagrid model
         $this->datagrid->clear();
 
         // Start Populatin Data
