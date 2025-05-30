@@ -20,10 +20,7 @@ Update:
 
 <div align="center">
     <img src="./app/images/banner.png" width="80%">
-    <video width="80%" autoplay loop muted>
-        <source src="./app/videos/Hogwartts-School-Adianti-8-Web.webm" type="video/webm">
-        Seu navegador não suporta o elemento de vídeo.
-    </video>
+    <img src="./app/videos/Hogwartts-School-Adianti-8-GIF.gif" width="80%">
 </div>
 
 ## Sobre o Projeto
@@ -74,7 +71,7 @@ Com vasta experiência em desenvolvimento web e  profundo conhecimento da lingua
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=IBM+Plex+Mono&weight=600&size=30&duration=3000&pause=700&color=ED51F7&center=true&vCenter=true&random=false&width=490&height=55&lines=Ol%C3%A1!+%F0%9F%99%8B%E2%80%8D%E2%99%82%EF%B8%8F+Meu+nome+%C3%A9+Igor;Hello!+%F0%9F%91%8B+My+name+is+Igor)](https://git.io/typing-svg)
 
-<img src="./app/images/igor.png" width="200" style="border-radius:60px">
+<img src="./app/images/igor-perfil-mascara-ondulada.webp" width="240" style="border-radius:60px">
 
 </div>
 
