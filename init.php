@@ -20,3 +20,4 @@ AdiantiApplicationConfig::start();
 define('PATH', dirname(__FILE__));
 
 setlocale(LC_ALL, 'C');
+

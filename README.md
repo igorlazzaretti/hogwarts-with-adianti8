@@ -19,16 +19,20 @@ Update:
 ## Hogwarts School with Adianti 8
 
 <div align="center">
-   <img width="710"src="./app/images/banner.png">
+    <img src="./app/images/banner.png" width="80%">
+    <video width="80%" autoplay loop muted>
+        <source src="./app/videos/Hogwartts-School-Adianti-8-Web.webm" type="video/webm">
+        Seu navegador não suporta o elemento de vídeo.
+    </video>
 </div>
 
 ## Sobre o Projeto
 
-Essa aplicação backend faz parte do curso de typescript do DevClub.
+Com a chegada do Adianti 8 resolvi unir minha paixão por Harry Potter com meus estudos. Este sistema foi desenvolvido com o intuito de aprimorar e aprender novas habilidades em desenvolvimento web.
 
-<br> Adianti 8: Framework PHP.
+<br> Adianti 8: Framework de desenvolvimento web em PHP.
 
-<br> MySQL: Banco de dados.
+<br> MySQL, SQLite ou TimeScaleDB: Banco de dados.
 
 
 ## Tecnologias Utilizadas
@@ -70,13 +74,13 @@ Com vasta experiência em desenvolvimento web e  profundo conhecimento da lingua
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=IBM+Plex+Mono&weight=600&size=30&duration=3000&pause=700&color=ED51F7&center=true&vCenter=true&random=false&width=490&height=55&lines=Ol%C3%A1!+%F0%9F%99%8B%E2%80%8D%E2%99%82%EF%B8%8F+Meu+nome+%C3%A9+Igor;Hello!+%F0%9F%91%8B+My+name+is+Igor)](https://git.io/typing-svg)
 
-<img src="./app/images/igor.png" width="190" style="border-radius:60px">
+<img src="./app/images/igor.png" width="200" style="border-radius:60px">
 
 </div>
 
 🎓 Análise de Sistemas - Cruzeiro do Sul <br>
 💻 Estudante FullStack: DevClub <br>
-👩🏻‍💻 Autor do Site: <a href="https://igorlazzaretti.com/">igorlazzaretti.com</a> <br>
+👩🏻‍💻 Portfólio: <a href="https://igorlazzaretti.com/">igorlazzaretti.com</a> <br>
 📚 Leitor e Estudante de Inglês <br>
 🧙‍♂️ Fã de Harry Potter  <br>
 

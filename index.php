@@ -30,3 +30,4 @@ if (isset($_REQUEST['class']))
     $method = isset($_REQUEST['method']) ? $_REQUEST['method'] : NULL;
     AdiantiCoreApplication::loadPage($_REQUEST['class'], $method, $_REQUEST);
 }
+
