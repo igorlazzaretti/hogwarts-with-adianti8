@@ -13,5 +13,6 @@ class Professor extends TRecord
         parent::__construct($id, $callObjectLoad);
         parent::addAttribute('nome');
         parent::addAttribute('materia_id');
+        parent::addAttribute('curiosidade');
     }
 }

@@ -13,5 +13,6 @@ class Funcionario extends TRecord
         parent::__construct($id, $callObjectLoad);
         parent::addAttribute('nome');
         parent::addAttribute('cargo');
+        parent::addAttribute('funcoes');
     }
 }

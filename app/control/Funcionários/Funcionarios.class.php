@@ -46,9 +46,11 @@ class Funcionarios extends TPage
             'nome'     =>  '{name}',
             'cargo'    =>  '{cargo}'
         ]);
+        // Mostra as funções do funcionário
         $action2 = new TDataGridAction([$this, 'onSubject'],[
             'nome'     =>  '{name}',
-            'cargo'    =>  '{cargo}'
+            'cargo'    =>  '{cargo}',
+            'funcoes'  =>  '{funcoes}'
         ]);
         $action3 = new TDataGridAction([$this, 'onDelete'],[
             'id'       =>  '{id}',
@@ -83,7 +85,7 @@ class Funcionarios extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, cargo FROM funcionario ORDER BY id');
+                id, nome, cargo, funcoes FROM funcionario ORDER BY id');
 
             foreach ($result as $row)
             {
@@ -91,6 +93,7 @@ class Funcionarios extends TPage
                 $item->id    =  $row['id'];
                 $item->name  =  $row['nome'];
                 $item->cargo =  $row['cargo'];
+                $item->funcoes =  $row['funcoes'];
 
                 $this->datagrid->addItem($item);
             }
@@ -153,14 +156,15 @@ class Funcionarios extends TPage
 
     /**
      *  Método onSubject()
-     *  Mostra o assunto ensinado nesta matéria
+     *  Mostras as funções específicas do funcionário
      */
     public static function onSubject($param)
     {
-        new TMessage('info',    'Estes são os contúdos desta matéria: <br>
-                            Desvendar a borra de café do fundo da xícara, <br>
-                            Uso do viratempo para assistir muitas aulas, <br>
-                            Desaparatar dentro de Hogwarts, com Dumbledore (mistério).' );
+        $name    = $param['nome'];
+        $funcoes = $param['funcoes'];
+
+        new TMessage('info', "Suas funções do(a) <b>" . $name . "</b>: <br> <b>"
+            . $funcoes . "</b>");
     }
 
     public static function onDelete($param)
@@ -172,7 +176,7 @@ class Funcionarios extends TPage
         $name = $param['name'];
 
         // shows a dialog to the user
-        new TQuestion(('Quer mesmo deletar ' . $name . '?'), $action);
+        new TQuestion(('Quer mesmo deletar <b>' . $name . '</b>?'), $action);
     }
 
     /**
@@ -232,7 +236,7 @@ class Funcionarios extends TPage
             $conn = TTransaction::get();
 
             $result = $conn->query('SELECT
-                id, nome, cargo FROM funcionario ORDER BY id');
+                id, nome, cargo, funcoes FROM funcionario ORDER BY id');
 
             foreach ($result as $row)
             {
@@ -240,6 +244,8 @@ class Funcionarios extends TPage
                 $item->id = $row['id'];
                 $item->name = $row['nome'];
                 $item->cargo = $row['cargo'];
+                $item->funcoes = $row['funcoes'];
+
                 $this->datagrid->addItem($item);
             }
 

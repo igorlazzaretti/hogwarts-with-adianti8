@@ -1,33 +1,37 @@
 <?php
 
 use Adianti\Control\TAction;
+use Adianti\Control\TPage;
 use Adianti\Control\TWindow;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Dialog\TToast;
 use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Form\TModalForm;
+use Adianti\Widget\Form\TText;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class MateriasCadastrar extends TWindow
+class MateriasCadastrar extends TPage
 {
     private $form;
 
     public function __construct()
     {
         parent::__construct();
+        parent::setTargetContainer('adianti_right_panel');
 
-        // Configurações da janela
-        parent::setTitle('Cadastrar Matéria');
-        parent::setSize(0.6, 0.5);
-
+        // Cria a janela
+        $this->form = new TModalForm('form_materias');
+        $this->form->setFormTitle('Cadastrar Matéria');
         // Cria o formulário
-        $this->form = new BootstrapFormBuilder('form_materias');
 
         // Adicione os campos do formulário aqui
         $nome = new TEntry('nome');
+
         $ano = new TCombo('ano');
         $ano->addItems([
             '1' => '1º Ano',
@@ -37,10 +41,14 @@ class MateriasCadastrar extends TWindow
         ]);
         $ano->setValue('1');
 
-        $this->form->addFields([new TLabel('Nome')], [$nome]);
-        $this->form->addFields([new TLabel('Ano')], [$ano]);
+        $assunto = new TText('assunto');
+
+        $this->form->addRowField('Nome:', $nome, true);
+        $this->form->addRowField('Ano:', $ano, true);
+        $this->form->addRowField('Assunto:', $assunto, true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         // Adiciona o formulário à janela
         parent::add($this->form);
@@ -68,12 +76,13 @@ class MateriasCadastrar extends TWindow
             $message  = 'Você cadastrou a matéria:  <br>';
             $message .= 'Nome: '  . $data->nome .  '<br>';
             $message .= 'Ano: '   . $data->ano .   '<br>';
+            $message .= 'Assunto: ' . $data->assunto . '<br>';
 
             // exibe a mensagem
             new TMessage('info', $message, new TAction([$this, 'onSuccess']));
 
             // exibe um toast de confirmação
-            TToast::show('success', 'Matéria cadastrada com sucesso!', 'bottom right', 'fa:circle-check');
+            TToast::show('success', 'Matéria cadastrada com sucesso!', 'top center', 'fa:circle-check');
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback(); // desfaz a transação em caso de erro
@@ -86,5 +95,12 @@ class MateriasCadastrar extends TWindow
     public function onSuccess()
     {
         AdiantiCoreApplication::gotoPage('Materias', 'onReload');
+    }
+    /**
+    * on close
+    */
+    public static function onClose($param)
+    {
+        TScript::create("Template.closeRightPanel()");
     }
 }

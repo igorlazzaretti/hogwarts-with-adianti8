@@ -68,12 +68,13 @@ class AlunosCadastrar extends TPage
         ]);
         $house->setValue('Lufa-Lufa');
 
-        $this->form->addRowField([new TLabel('Nome')],  $nome,   true);
-        $this->form->addRowField([new TLabel('Idade')], $age,    true);
-        $this->form->addRowField([new TLabel('Ano')],   $year,   true);
-        $this->form->addRowField([new TLabel('Casa')],  $house,  true);
+        $this->form->addRowField('Nome:',  $nome,   true);
+        $this->form->addRowField('Idade:', $age,    true);
+        $this->form->addRowField('Ano:',   $year,   true);
+        $this->form->addRowField('Casa:',  $house,  true);
 
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:save');
+        $this->form->addFooterAction('Voltar', new TAction([$this, 'onSuccess']), 'fa:arrow-left');
 
         // add the form to the page
         parent::add($this->form);
