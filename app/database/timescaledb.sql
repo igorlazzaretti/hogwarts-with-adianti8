@@ -21,7 +21,7 @@ CREATE TABLE Professor (
     id          SERIAL PRIMARY KEY,
     nome        TEXT NOT NULL,
     materia_id  INTEGER REFERENCES Materia(id),
-    curiosidade TEXT 
+    curiosidade TEXT
 );
 
 -- Criação da tabela Funcionario
@@ -57,7 +57,7 @@ INSERT INTO Aluno (nome, idade, casa, ano) VALUES
 -- Inserção de dados de exemplo na tabela Materia
 INSERT INTO Materia (nome, ano, assunto) VALUES
 ('Transfiguração',                    1, 'Transformação de objetos e seres.Exemplo: Transformar um rato em uma taça de cristal.'),
-('Poções',                            1, 'Preparo de poções mágicas com diversos efeitos. Exemplos: Poção Polissuco (permite transformar-se em outra pessoa) e Poção da Sorte Felix Felicis (dá sorte ao bebedor).'),
+('Poções',                            1, 'Preparo de poções mágicas com diversos efeitos. Exemplos: Poção Polissuco (permite transformar-se em outra pessoa) e Poção da Sorte Felix Felicis (dá sorte a quem beber).'),
 ('Feitiços',                          1, 'Lançamento de feitiços com varinhas mágicas. Exemplos: Wingardium Leviosa (faz objetos levitarem), Accio (traz objetos para perto) e Lumos (acende a ponta da varinha).'),
 ('Herbologia',                        1, 'Cultivo e estudo de plantas mágicas. Exemplos: Cultivo de Mandrágoras (cujo grito é fatal), Visgo do Diabo (planta carnívora perigosa), Guelricho (respirar em baixo de água).'),
 ('História da Magia',                 1, 'Eventos históricos do mundo bruxo. Exemplos: Rebeliões dos Duendes, Ascensão e queda de bruxos famosos, Guerras Bruxas, Criação do Ministério da Magia...'),

@@ -20,7 +20,7 @@ Update:
 
 <div align="center">
     <img src="./app/images/banner.png" width="80%">
-    <img src="./app/videos/Hogwartts-School-Adianti-8-GIF.gif" width="80%">
+    <img src="./app/videos/Hogwartts-School-Adianti-8-GIF.gif" width="95%">
 </div>
 
 ## Sobre o Projeto
@@ -29,7 +29,7 @@ Com a chegada do Adianti 8 resolvi unir minha paixão por Harry Potter com meus 
 
 <br> Adianti 8: Framework de desenvolvimento web em PHP.
 
-<br> MySQL, SQLite ou TimeScaleDB: Banco de dados.
+<br> MySQL, SQLite ou TimeScaleDB: Banco de dados. Use o SQL em app/database para alimentar seu banco.
 
 
 ## Tecnologias Utilizadas
